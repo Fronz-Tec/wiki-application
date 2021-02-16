@@ -21,5 +21,5 @@
 ?>
 
 <footer>
-    <p>(C) 2020</p>
+    <p class="copyrightText">(C) 2020</p>
 </footer>

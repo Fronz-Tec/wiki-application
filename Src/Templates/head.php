@@ -21,7 +21,7 @@
 ?>
 
 <head>
-    <title>Obvita Chat Deluxe</title>
+    <title>Wiki Webapplication</title>
 
     <meta name="description" content="This is a wiki web application for obvita">
     <meta name="keywords" content="wiki, communication, knowledge, media, writting, sharing">

@@ -30,5 +30,11 @@
 
 <main>
 
+    <?
+
+    include_once "source/controller/db_controller.php";
+
+    ?>
+
 
 </main>

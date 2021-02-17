@@ -21,6 +21,7 @@ Variables
 //Colors
 @light-grey: #6A7989;
 @dark-grey: #4B4B4B;
+@even-darker-grey: #302F33;
 @green: #C8D400;
 @white: #f7f7f7;
 
@@ -35,12 +36,23 @@ Variables
 /*
 Standard HTML Elements
  */
+
+aside{
+  width: 20%;
+  float: right;
+}
+
 header{
 
 }
 
 footer{
 
+}
+
+main{
+  width: 80%;
+  float: left;
 }
 
 nav{
@@ -57,9 +69,51 @@ IDs
 
 
 
+
+
 /*
 Classes
 */
+
+
+
+.bordered{
+  border: 1px solid @even-darker-grey;
+}
+
+
+.article{
+
+  p{
+    color: @even-darker-grey;
+  }
+
+  .articleAuthor{
+
+  }
+
+  .articleBox{
+    width: 80%;
+    .bordered();
+
+  }
+
+  .articleContainer{
+
+  }
+
+  .articleDate{
+
+  }
+
+  .articleText{
+
+  }
+
+}
+
+
+
 
 .copyrightText{
 

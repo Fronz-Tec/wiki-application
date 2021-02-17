@@ -287,7 +287,7 @@ class DbController
 
 
     //ToDO: Function to call for every user Input, to make sure, SQL Injections aren't possible
-    public function invalidateSQLInjection(){
+    public function invalidateSQLInjection($sqlQuery, $userInput){
 
     }
 

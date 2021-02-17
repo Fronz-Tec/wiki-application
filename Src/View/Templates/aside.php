@@ -25,7 +25,18 @@
 
     <?php
 
-        if(isset($_SESSION["sessionID"])){
+//        if(isset($_SESSION["sessionID"])){
+
+
+//            if(isset($_GET("site")) == "articleCreation"){
+
+                ?>
+
+                <button type="submit" form="articleCreationForm">Save Article</button>
+
+                <?php
+//            }
+
 
             ?>
 
@@ -36,7 +47,8 @@
 
     <?php
 
-        }
+//        }
+
 
     ?>
 

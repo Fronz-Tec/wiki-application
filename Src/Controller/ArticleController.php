@@ -76,5 +76,12 @@ class ArticleController
 
     }
 
+    //ToDo: Make Article Creation
+    public function saveArticleInDb($title,$text, $category){
+
+
+
+    }
+
 
 }

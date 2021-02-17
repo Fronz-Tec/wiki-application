@@ -45,12 +45,15 @@
 //    }else{
 //        if($_GET["site" == "articleView"]){
 //            include_once("./View/Article/articleView.php");
-//        }else{
+//        }else if($_GET["site" == "articleCreation"]){
+//            include_once("./View/Article/articleCreationView.php")
+    //    }else{
 //            include_once("./View/Pages/login.php");
 //        }
 //    }
 
-    include_once("./View/Article/articleView.php");
+//    include_once("./View/Article/articleView.php");
+    include_once("./View/Article/articleCreationView.php");
 
     ?>
 

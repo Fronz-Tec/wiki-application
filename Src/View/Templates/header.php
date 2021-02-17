@@ -23,12 +23,14 @@
 <header>
       <?php
 
-      include_once "Src/Controller/DbController.php";
+      include_once "./Controller/DbController.php";
 
       session_start();
 
       ?>
 
     <img src="" alt="Obvita Logo" class="logoImage">
+
+
 
 </header>

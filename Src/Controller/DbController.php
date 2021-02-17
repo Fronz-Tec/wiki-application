@@ -19,14 +19,14 @@
 
 use DbCredentials\DbCredentials;
 
-
+ $connection = null;
 
 class DbController
 {
 
     public $dbCredentials;
     public $isConnected;
-    public $connection;
+
 
     /**
      * DbController constructor.
@@ -34,11 +34,17 @@ class DbController
      * @param $isConnected
      * @param $connection
      */
-    public function __construct($dbCredentials, $isConnected, $connection)
+    public function __construct($dbCredentials)
     {
+        global $connection;
+
         $this->dbCredentials = $dbCredentials;
-        $this->isConnected = $isConnected;
-        $this->connection = $connection;
+
+        if ($connection == null){
+            $this->getDbConnection();
+        }
+
+        $this->createDbTables();
     }
 
 
@@ -58,10 +64,10 @@ class DbController
         $tempCredentialObj = $this->getDbCredentials();
         $tempCredential = $tempCredentialObj->getCredentials();
 
-        error_log( $tempCredential["DB_SERVER"],
-            $tempCredential["DB_USERNAME"],
-            $tempCredential["DB_PASSWORD"],
-            $tempCredential["DB_NAME"]);
+        error_log( $tempCredential["DB_SERVER"]);
+        error_log($tempCredential["DB_USERNAME"]);
+        error_log($tempCredential["DB_PASSWORD"]);
+        error_log($tempCredential["DB_NAME"]);
 
 
         $connection = new mysqli(
@@ -80,19 +86,22 @@ class DbController
 
     function getDbConnection()
     {
-        if ($this->connection == null) {
-            $this->dbConnect();;
+        global $connection;
+
+        if ($connection == null) {
+            $this->dbConnect();
         }
 
-        return $this->connection;
+        return $connection;
     }
 
 
 
     public function isConnected():bool
     {
+        global $connection;
 
-        if($this->connection != null) {
+        if($connection != null) {
             $this->isConnected = true;
         }else{
             $this->isConnected = false;
@@ -104,8 +113,10 @@ class DbController
 
 
 
-    public function createDbTables(){
+    public function createDbTables()
+    {
 
+        global $connection;
 
 
         if($this->isConnected() == true) {
@@ -117,7 +128,7 @@ class DbController
                 PRIMARY KEY (id)
             )";
 
-            mysqli_query($this->connection, $sql);
+            mysqli_query($connection, $sql);
 
             //Checks if Roles is empty
             $statementRoles = "SELECT * FROM `roles` WHERE id > 0";
@@ -140,7 +151,7 @@ class DbController
                 PRIMARY KEY (id)
             )";
 
-            mysqli_query($this->connection, $sql);
+            mysqli_query($connection, $sql);
 
             //Checks if Category is empty
             $statementCategory = "SELECT * FROM `category` WHERE id > 0";
@@ -163,7 +174,7 @@ class DbController
                 PRIMARY KEY (id)
             )";
 
-            mysqli_query($this->connection, $sql);
+            mysqli_query($connection, $sql);
 
             //Checks if Visibility is empty
             $statementGroups = "SELECT * FROM `visibility` WHERE id > 0";
@@ -185,7 +196,7 @@ class DbController
                 PRIMARY KEY (id)
             )";
 
-            mysqli_query($this->connection, $sql);
+            mysqli_query($connection, $sql);
 
             //Checks if Groups is empty
             $statementGroups = "SELECT * FROM `groups` WHERE id > 0";
@@ -216,7 +227,7 @@ class DbController
                   FOREIGN KEY (category_fsid) REFERENCES 'category' (id), 
                 )";
 
-            mysqli_query($this->connection, $sql);
+            mysqli_query($connection, $sql);
 
 
             //create links
@@ -229,7 +240,7 @@ class DbController
                   FOREIGN KEY (category_fsid) REFERENCES 'category' (id),
                 )";
 
-            mysqli_query($this->connection, $sql);
+            mysqli_query($connection, $sql);
 
 
             //create user
@@ -246,7 +257,7 @@ class DbController
                    FOREIGN KEY (`role_fsid`) REFERENCES `roles` (`id`)
                 )";
 
-            mysqli_query($this->connection, $sql);
+            mysqli_query($connection, $sql);
 
 
             $statementUser = "SELECT * FROM `user` WHERE id > 0";
@@ -265,9 +276,34 @@ class DbController
             }
         }
 
+    }
+
+
+    public function executeQuery($statement){
+
+        return mysqli_query($this->getDbConnection(), $statement);
 
     }
 
+
+    //ToDO: Function to call for every user Input, to make sure, SQL Injections aren't possible
+    public function invalidateSQLInjection(){
+
+    }
+
+    /*EVtl in andere Controller auslagern*/
+
+
+
+
+    public function login($username, $password){
+
+        $tempSessionID = uniqid();
+
+
+
+
+    }
 
 
 }

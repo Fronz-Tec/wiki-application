@@ -16,3 +16,28 @@
  * @since 16.02.21
  *
  */
+
+
+?>
+
+
+<div class="sideMenu">
+
+    <?php
+
+        if(isset($_SESSION["sessionID"])){
+
+            ?>
+
+            <form action="../../Controller/EventHandling.php" method="post">
+                <input type="hidden" name="logout" id="logout" value="true">
+                <button onclick="this.form.submit()">Logout</button>
+            </form>
+
+    <?php
+
+        }
+
+    ?>
+
+</div>

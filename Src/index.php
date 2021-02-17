@@ -23,15 +23,16 @@
 
 
 <?php
-include "Templates/head.php"
+include "View/Templates/head.php"
 ?>
 
 <body>
 
+<p>Hallo</p>
 <?php
-include "Templates/header.php";
-include "Templates/content.php";
-include "Templates/footer.php"
+include "View/Templates/header.php";
+include "View/Templates/content.php";
+include "View/Templates/footer.php"
 ?>
 </body>
 

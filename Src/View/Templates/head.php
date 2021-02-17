@@ -46,7 +46,7 @@
 
 
     <!--Own Style-->
-    <link rel="stylesheet/less" type="text/css" href="../../Style/default.less">
+    <link rel="stylesheet/less" type="text/css" href="./Style/default.less">
 
     <!--Less Import-->
     <script src="//cdn.jsdelivr.net/npm/less" ></script>

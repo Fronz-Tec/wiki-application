@@ -17,11 +17,17 @@
 
 ?>
 
+<p>C</p>
+<div class="loginContainer">
 
-<form>
+    <form>
 
-    <input type="text" id="usernameInput" value="usernameInput" placeholder="username:">
-    <input type="password" id="passwordInput" value="passwordInput" placeholder="password:">
-    <button type="submit" id="submitLogin" value="submitLogin">Submit</button>
+        <input type="text" id="usernameInput" value="usernameInput" placeholder="username:">
+        <input type="password" id="passwordInput" value="passwordInput" placeholder="password:">
+        <button type="submit" id="submitLogin" value="submitLogin">Submit</button>
 
-</form>
+    </form>
+
+</div>
+
+

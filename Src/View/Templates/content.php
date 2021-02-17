@@ -23,18 +23,37 @@
 <aside>
     <?php
 
-    include_once "templates/aside.php";
+    include_once "aside.php";
 
     ?>
 </aside>
 
 <main>
+    <p>B</p>
 
-    <?
 
-    include_once "source/controller/db_controller.php";
+    <form action="Controller/EventHandling.php" method="post">
+        <input type="hidden" name="articleTest" id="article" value="true">
+        <button onclick="this.form.submit()">TestArticle</button>
+    </form>
+
+    <?php
+
+
+//    if(isset($_SESSION["sessionID"])){
+//        error_log("sessionId");
+//    }else{
+//        if($_GET["site" == "articleView"]){
+//            include_once("./View/Article/articleView.php");
+//        }else{
+//            include_once("./View/Pages/login.php");
+//        }
+//    }
+
+    include_once("./View/Article/articleView.php");
 
     ?>
 
+    <p>Test</p>
 
 </main>

@@ -31,6 +31,4 @@
 
     <img src="" alt="Obvita Logo" class="logoImage">
 
-
-
 </header>

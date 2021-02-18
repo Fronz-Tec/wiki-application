@@ -1,6 +1,5 @@
 <?php
 
-
 ?>
 
 
@@ -10,9 +9,35 @@
         include_once "Controller/ArticleController.php";
 
         $articleController = new ArticleController();
-        $articles = $articleController->getAllArticles();
 
-        if($articles !== null) {
+        $articles = null;
+
+
+        //ToDo: Check If User can see the visibility of the article
+
+        if(isset($_GET["permission"])) {
+            echo "Eigene werden geladen";
+
+            if ($_GET["permission"] == "own") {
+
+                $articles = $articleController->getAllByOwn();
+
+
+            } else if ($_GET["permission"] == "curator" || $_GET["permission"] == "admin") {
+
+                //Check if user really is admin or curator
+
+                echo "Alle Artikel";
+            } else {
+
+            }
+        }else {
+
+            $articles = $articleController->getAllArticles();
+
+        }
+
+        if ($articles !== null) {
             foreach ($articles as $article) {
                 $articleId = $article["id"];
                 $currentArticleCategory = $articleController->getArticleCategory($articleId);
@@ -21,29 +46,40 @@
 
                 error_log("Current Category: " . $currentArticleCategory);
 
-                //ToDo: Check If User can see the visibility of the article
-                if ($currentArticleVisibility == "full") {
 
-                    echo "
+//                if ($currentArticleVisibility == "full") {
+
+                echo "
                     <div class='articleBox'>
-                    <span><h1 class='article articleTitle'>" . $article["title"] . "</h1></span>
-                    <span><h2 class='article articleDate'>" . $article["date"] . "</h2></span>
-                    <span><h3 class='article articleCategory'>" . $currentArticleCategory . "</h3></span>
-                    <span><h3 class='article articleAuthor'>" . $currentArticleAuthor . "</h3></span>";
+                        <div class='container-fluid'>
+                            <div class='row'>
+                                <span class='col-sm-2'><p class='articleCategory'>" . $currentArticleCategory . "</p></span>
+                                <span class='col'><h1 class='display-3 articleTitle'>" . $article["title"] . "</h1></span>
+                                <span class='col-sm-2'><p class='articleDate'>" . $article["date"] . "</p></span>
+                                
+                                <span class='col-sm-1'><p class='article articleAuthor'>" . $currentArticleAuthor . "</p></span>
+                            </div>
+                        </div>";
 
-                    if (isset($_SESSION["isAdmin"]) == true) {
-                        echo "<span><h3 class='article articleVisibility'>" . $currentArticleVisibility . "</h3></span>";
-                    }
-
-                    echo "<span><p class='article'>" . $article["text"] . "</p></span>
+                if (isset($_SESSION["role"]) == "admin" || isset($_SESSION["role"]) == "curator") {
+                    echo "<span>
+                            <h3 class='article articleVisibility'>" . $currentArticleVisibility . "</h3>
+                            <form id='articleCreationForm' method='post' action='Controller/EventHandling.php'>
+                                <input type='hidden' name='' value='".$article["id"]."'>
+                                <button type='submit'>Edit</button>
+                            </form>
+                        </span>";
                 }
+
+                echo "<span><p class='article'>" . $article["text"] . "</p></span>
 
                 </div>";
-
-                }
+//                }
             }
-
+        }else{
+            //ToDo Message No Articles found
         }
+
         ?>
 
 </div>

@@ -30,6 +30,12 @@ Variables
 
 
 //Sizes
+@full: 100%;
+@half: 50%;
+
+
+//font-sizes
+@huge: 72px;
 
 
 
@@ -40,19 +46,41 @@ Standard HTML Elements
 aside{
   width: 20%;
   float: right;
+  .siteElement();
+  height: @full;
+  min-height: @full;
+
+  @media (max-width: 768px) {
+    width: @full;
+  }
+
 }
 
-header{
-
+header {
+  min-height: 100px;
+  background-color: @dark-grey;
 }
 
 footer{
-
+  clear: both;
+  float: none;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: @full;
+  text-align: left;
+  margin: 0 auto;
+  .siteElement();
 }
 
 main{
   width: 80%;
   float: left;
+
+  @media (max-width: 768px) {
+    clear: both;
+    width: @full;
+  }
 }
 
 nav{
@@ -60,8 +88,28 @@ nav{
 }
 
 p{
-  color: red;
+
 }
+
+
+input{
+
+  width: 100%;
+
+  .inputTop{
+    background-color: @dark-grey;
+    .curvedTop();
+  }
+
+}
+
+
+.curvedTop{
+  border-radius: 25px 25px 0px 0px;
+}
+
+
+
 
 /*
 IDs
@@ -69,6 +117,37 @@ IDs
 
 
 
+
+
+
+
+
+
+
+/*
+Webkit ELements
+ */
+
+
+
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: @dark-grey;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: @even-darker-grey;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: @green;
+}
 
 
 /*
@@ -81,6 +160,26 @@ Classes
   border: 1px solid @even-darker-grey;
 }
 
+.siteElement{
+  background-color: @dark-grey;
+  color: @green;
+}
+
+
+
+.articleBox{
+  width: @full;
+  .bordered();
+  margin-top: 25px;
+  margin-bottom: 15px;
+
+  h1{
+    color: @green;
+    text-align: center;
+  }
+
+}
+
 
 .article{
 
@@ -88,30 +187,36 @@ Classes
     color: @even-darker-grey;
   }
 
-  .articleAuthor{
 
-  }
 
-  .articleBox{
-    width: 80%;
-    .bordered();
+}
 
-  }
+.articleAuthor{
 
-  .articleContainer{
+}
 
-  }
+.articleBox{
+  width: 95%;
+  .bordered();
 
-  .articleDate{
-
-  }
-
-  .articleText{
-
+  @media (max-width: 768px) {
+    clear: both;
+    width: @full;
   }
 
 }
 
+.articleContainer{
+  word-wrap: break-word;
+}
+
+.articleDate{
+
+}
+
+.articleText{
+
+}
 
 
 
@@ -123,3 +228,16 @@ Classes
 
 }
 
+
+
+.loginContainer{
+  //margin: 0 auto;
+  width: @half;
+  justify-content: center;
+  margin: 20% 40%;
+
+  @media (max-width: 768px) {
+    margin: 20% auto;
+  }
+
+}

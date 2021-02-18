@@ -23,33 +23,43 @@
 
 <div class="sideMenu">
 
-    <?php
-
-//        if(isset($_SESSION["sessionID"])){
-
-
-//            if(isset($_GET("site")) == "articleCreation"){
-
-                ?>
-
-                <button type="submit" form="articleCreationForm">Save Article</button>
-
-                <?php
-//            }
-
-
-            ?>
-
-            <form action="../../Controller/EventHandling.php" method="post">
-                <input type="hidden" name="logout" id="logout" value="true">
-                <button onclick="this.form.submit()">Logout</button>
-            </form>
 
     <?php
 
-//        }
+        echo "<p>test</p>";
 
+        if($_GET["site"] == "articleCreation"){
+
+            echo "<button type='submit' form='articleCreationForm'>Save Article</button>";
+
+
+        }
+
+        if($_GET["site"] == "articleView"){
+            echo "
+                <p class='menuText'>Create</p>
+                <form method='post' action='Controller/EventHandling.php'>
+                    <input type='hidden' id='createNew' name='createNew'>
+                    <button type='submit'>Create New</button>
+                </form>
+                
+                <form method='post' action='Controller/EventHandling.php'>
+                    <input type='hidden' id='editArticle' name='editArticle'>
+                    <button type='submit'>Edit</button>
+                </form>
+                
+                <hr class='menuDevider'>
+                
+            ";
+        }
 
     ?>
+
+    <form method="post" action="Controller/EventHandling.php">
+        <input type="hidden" name="logout" id="logout">
+        <button type="submit">Logout</button>
+    </form>
+
+    <p>agsdzhadha</p>
 
 </div>

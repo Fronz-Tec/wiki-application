@@ -7,8 +7,7 @@ include_once "Model/DbCredentials.php";
 class UserController
 {
 
-
-    public function createNewUser($username,$email,$password,$role){
+    public function createNewUser($username,$email,$password,$role,$group){
 
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -23,18 +22,24 @@ class UserController
 
                 if ($this->emailExists($email) == true){
                     //ToDo: Output Message
-                    error_log("Username already exists");
+                    error_log("Email already exists");
                 }else{
 
-                    $statement = "INSERT INTO `user` (`username`, `mail`, `password`, `role_fsid`) VALUES ( '".$username."', '".$email."', '".$hashedPassword."', '".$role."', ";
+                    error_log("Saving Of User");
+
+                    //ToDo: Prevent SQL Injection
+                    $statement = "INSERT INTO `user` (`username`, `mail`, `password`, `group_fsid`,`role_fsid`) VALUES ( '".$username."', '".$email."', '".$hashedPassword."', '".$group."' '".$role."');";
 
                     $dbCredentials = new \DbCredentials\DbCredentials();
                     $dbController = new DbController($dbCredentials);
-                    $tempResult = $dbController->executeQuery($statement);
+
+                    return $dbController->executeQuery($statement);
                 }
             }else{
                 //Todo Output Message
                 error_log("Invalid Mail");
+
+                return null;
             }
 
         }
@@ -58,7 +63,7 @@ class UserController
 
     public function emailExists($email):bool{
 
-        return $this->doesExist("user","email",$email);
+        return $this->doesExist("user","mail",$email);
 
     }
 
@@ -73,6 +78,7 @@ class UserController
 
         $tempResult = $dbController->executeQuery($statement);
 
+
         if ($tempResult->num_rows > 0){
             $doesExist = true;
         }else{
@@ -80,6 +86,31 @@ class UserController
         }
 
         return $doesExist;
+
+    }
+
+    public function hashPassword($password){
+
+        //ToDo: Prevent SQL Injections before hashing just to be sure
+
+        $passwordToHash = $password;
+        $hashedPassword = password_hash($passwordToHash, PASSWORD_DEFAULT);
+
+        //Check if password was really hashed
+        if($hashedPassword != $password){
+            return $hashedPassword;
+        }
+
+        return null;
+
+    }
+
+
+    public function isAdmin(){
+
+    }
+
+    public function isCurator(){
 
     }
 

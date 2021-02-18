@@ -17,14 +17,14 @@
 
 ?>
 
-<p>C</p>
 <div class="loginContainer">
 
-    <form>
+    <form id="loginForm" method="post" action="Controller/EventHandling.php">
 
-        <input type="text" id="usernameInput" value="usernameInput" placeholder="username:">
-        <input type="password" id="passwordInput" value="passwordInput" placeholder="password:">
-        <button type="submit" id="submitLogin" value="submitLogin">Submit</button>
+        <input type="text" id="usernameInput" name="usernameInput" placeholder="username:" class="inputTop"><br>
+        <input type="password" id="passwordInput" name="passwordInput" placeholder="password:"><br>
+        <input type="hidden" id="loginHidden" value="loginHidden" name="loginHidden">
+        <button type="submit" id="submitLogin">Submit</button>
 
     </form>
 

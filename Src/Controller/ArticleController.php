@@ -7,27 +7,62 @@ include_once "Model/DbCredentials.php";
 class ArticleController
 {
 
-    public function getAllArticles(): array{
 
-        $statement = "SELECT * FROM article";
+
+    public function getAllArticles(): array
+    {
 
         $dbCredentials = new \DbCredentials\DbCredentials();
-
         $dbController = new DbController($dbCredentials);
 
+        return $dbController->getAll("article");
+
+    }
+
+
+    public function getAllArticlesByVisibility($visibility):array
+    {
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
+
+        return $dbController->getAllBy("article","visibility_fsid",$visibility);
+
+    }
+
+    public function getAllArticlesByAuthor($author):array
+    {
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
+
+        return $dbController->getAllBy("article","author_fsid",$author);
+
+    }
+
+    public function getAllByOwn():array
+    {
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
+
+        $username = $_SESSION["username"];
+
+        $statement = "Select id FROM user WHERE username ='".$username."'";
         $tempResult = $dbController->executeQuery($statement);
 
-        $result = array();
+        $value = mysqli_fetch_assoc($tempResult)["id"];
 
-        while ($article = mysqli_fetch_array($tempResult)) {
+        error_log("User Id: ".$value);
 
-            array_push($result, $article);
 
-        }
+        return $dbController->getAllBy("article","author_fsid",$value);
 
-//        var_dump($result);
+    }
 
-        return $result;
+    public function getAllArticlesByCategory($category):array
+    {
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
+
+        return $dbController->getAllBy("article","category_fsid",$category);
 
     }
 
@@ -79,7 +114,41 @@ class ArticleController
     //ToDo: Make Article Creation
     public function saveArticleInDb($title,$text, $category){
 
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
 
+        session_start();
+
+        $username = $_SESSION["username"];
+
+        $statement = "Select id FROM user WHERE username ='".$username."'";
+        $tempResult = $dbController->executeQuery($statement);
+
+        $authorId = mysqli_fetch_assoc($tempResult)["id"];
+
+        error_log("Autor Id: ".$authorId);
+
+        $testVisibility = "4";
+
+        error_log($title);
+        error_log($text);
+        error_log($category);
+
+        //ToDo: Prevent SQL Injection
+
+        $statement = "INSERT INTO `article` (`title`, `text`, `author_fsid`, `visibility_fsid`, `category_fsid`) VALUES ('".$title."', '".$text."', '".$authorId."', '".$testVisibility."', '".$category."'); ";
+
+        error_log($statement);
+
+        $dbCredentials = new \DbCredentials\DbCredentials();
+
+        $dbController = new DbController($dbCredentials);
+
+        $result = $dbController->executeQuery($statement);
+
+        error_log($result);
+
+        return $result;
 
     }
 

@@ -10,7 +10,7 @@
  * @subpackage Controller
  * @copyright Copyright (c) 2021 Kevin Alexander Fronzeck
  * @license
- * @version 0.2
+ * @version 0.4
  * @link
  * @since 16.02.21
  *
@@ -279,10 +279,47 @@ class DbController
     }
 
 
-    public function executeQuery($statement){
+    public function executeQuery($statement)
+    {
 
         return mysqli_query($this->getDbConnection(), $statement);
 
+    }
+
+
+    public function getAll($table):array
+    {
+
+        $statement = "SELECT * FROM ".$table." ";
+
+        $result = array();
+
+        $tempResult = $this->executeQuery($statement);
+
+        while ($entry = mysqli_fetch_array($tempResult)) {
+
+            array_push($result, $entry);
+
+        }
+
+        return $result;
+    }
+
+    public function getAllBy($table, $condition, $conditionCheck):array
+    {
+        $statement = "SELECT * FROM ".$table." WHERE ".$condition."='".$conditionCheck."'";
+
+        $result = array();
+
+        $tempResult = $this->executeQuery($statement);
+
+        while ($entry = mysqli_fetch_array($tempResult)) {
+
+            array_push($result, $entry);
+
+        }
+
+        return $result;
     }
 
 
@@ -291,19 +328,7 @@ class DbController
 
     }
 
-    /*EVtl in andere Controller auslagern*/
 
-
-
-
-    public function login($username, $password){
-
-        $tempSessionID = uniqid();
-
-
-
-
-    }
 
 
 }

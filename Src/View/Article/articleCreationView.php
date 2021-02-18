@@ -7,8 +7,8 @@
 
 <div class="article articleCreationContainer">
 
-    <form id="articleCreationForm">
-        <select>
+    <form id="articleCreationForm" method="post" action="Controller/EventHandling.php">
+        <select id="articleCategory" name="articleCategory">
             <?php
 
             include_once "Controller/CategoryController.php";
@@ -25,12 +25,12 @@
         </select>
         <br>
 
-        <input type="text" id="articleTitle" class="articleTitle" placeholder="Title" required>
+        <input type="text" id="articleTitle" name="articleTitle" class="articleTitle" placeholder="Title" required>
         <br>
 
-        <input type="hidden" id="articleHidden" required>
+        <input type="hidden" id="articleHidden" name="articleHidden" value="articleHidden" required>
 
-        <textarea id="articleTextBox" class="articleText" required></textarea>
+        <textarea id="articleText" name="articleText" class="articleText" required></textarea>
 
 
 

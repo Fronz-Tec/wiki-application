@@ -28,7 +28,6 @@ include "View/Templates/head.php"
 
 <body>
 
-<p>Hallo</p>
 <?php
 include "View/Templates/header.php";
 include "View/Templates/content.php";

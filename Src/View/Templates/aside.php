@@ -26,12 +26,16 @@
 
     <?php
 
-        echo "<p>test</p>";
+    include_once "Controller/UserController.php";
 
-        if($_GET["site"] == "articleCreation"){
+    $userController = new UserController();
+
+
+    echo "<p>test</p>";
+
+        if($_GET["site"] == "articleCreation" || $_GET["site"] == "articleCreation" && isset($_GET["articleId"])){
 
             echo "<button type='submit' form='articleCreationForm'>Save Article</button>";
-
 
         }
 
@@ -51,6 +55,15 @@
                 <hr class='menuDevider'>
                 
             ";
+        }
+
+
+        if ($userController->isAdmin()){
+
+            echo "<form method='post' action='Controller/EventHandling.php'>
+                    <input type='hidden' name='userCreation'>
+                    <button type='submit'>Create User</button>
+                </form>";
         }
 
     ?>

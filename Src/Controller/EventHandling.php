@@ -45,14 +45,27 @@ if (isset($_POST["articleTest"])){
 }
 
 //Article Save Event
-if (isset($_POST["articleHidden"]) && isset($_POST["articleTitle"]) && isset($_POST["articleText"]) && isset($_POST["articleCategory"])){
-
+if (isset($_POST["articleHidden"]) && isset($_POST["articleTitle"]) && isset($_POST["articleText"])){
     error_log("Article save event called");
     $articleController->saveArticleInDb($_POST["articleTitle"],$_POST["articleText"],$_POST["articleCategory"]);
     header('location: http://localhost/wiki/?site=articleView');
-
 }
 
+//Article Update Event
+if (isset($_POST["articleHiddenUpdate"]) && isset($_POST["articleTitle"]) && isset($_POST["articleText"])){
+
+    if($_POST["visibility"]){
+        $visibility = $_POST["visibility"];
+    }else{
+        $visibility = 2;
+    }
+
+    error_log("Article update event called");
+    $articleController->updateArticleInDb($_POST["articleId"],$_POST["articleTitle"],$_POST["articleText"],$_POST["articleCategory"], $visibility);
+
+    header('location: http://localhost/wiki/?site=articleView');
+
+}
 
 
 //Login Event
@@ -87,7 +100,21 @@ if(isset($_POST["createNew"])){
 }
 
 
+
 //route to articleCreation(Own Article View)
 if(isset($_POST["editArticle"])){
     header('location: http://localhost/wiki/?site=articleView&permission=own');
+}
+
+
+
+if(isset($_POST["userCreation"])){
+    header('location: http://localhost/wiki/?site=userCreation');
+}
+
+
+if(isset($_POST["articleId"])){
+
+    $articleId = $_POST["articleId"];
+    header('location: http://localhost/wiki/?site=articleCreation&articleId='.$articleId);
 }

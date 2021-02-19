@@ -7,8 +7,10 @@
 
     <?php
         include_once "Controller/ArticleController.php";
+        include_once "Controller/UserController.php";
 
         $articleController = new ArticleController();
+        $userController = new UserController();
 
         $articles = null;
 
@@ -44,7 +46,6 @@
                 $currentArticleAuthor = $articleController->getArticleAuthor($articleId);
                 $currentArticleVisibility = $articleController->getArticleVisibility($articleId);
 
-                error_log("Current Category: " . $currentArticleCategory);
 
 
 //                if ($currentArticleVisibility == "full") {
@@ -61,19 +62,20 @@
                             </div>
                         </div>";
 
-                if (isset($_SESSION["role"]) == "admin" || isset($_SESSION["role"]) == "curator") {
+                echo "<span><p class='article'>" . $article["text"] . "</p></span>";
+
+                if ($userController->isAdmin() || $userController->isCurator() ||$articleController->hasPermissionToEdit($article["id"])) {
                     echo "<span>
                             <h3 class='article articleVisibility'>" . $currentArticleVisibility . "</h3>
                             <form id='articleCreationForm' method='post' action='Controller/EventHandling.php'>
-                                <input type='hidden' name='' value='".$article["id"]."'>
+                                <input type='hidden' name='articleId' id='articleId' value='".$article["id"]."'>
                                 <button type='submit'>Edit</button>
                             </form>
                         </span>";
                 }
 
-                echo "<span><p class='article'>" . $article["text"] . "</p></span>
+                echo "</div>";
 
-                </div>";
 //                }
             }
         }else{

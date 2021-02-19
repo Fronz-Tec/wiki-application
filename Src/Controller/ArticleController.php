@@ -4,6 +4,10 @@
 include_once "DbController.php";
 include_once "Model/DbCredentials.php";
 
+include_once "SessionController.php";
+include_once "UserController.php";
+
+
 class ArticleController
 {
 
@@ -16,6 +20,15 @@ class ArticleController
         $dbController = new DbController($dbCredentials);
 
         return $dbController->getAll("article");
+
+    }
+
+    public function getArticleById($id): array{
+
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
+
+        return $dbController->getAllBy("article","id",$id);
 
     }
 
@@ -38,6 +51,8 @@ class ArticleController
 
     }
 
+
+
     public function getAllByOwn():array
     {
         $dbCredentials = new \DbCredentials\DbCredentials();
@@ -46,12 +61,10 @@ class ArticleController
         $username = $_SESSION["username"];
 
         $statement = "Select id FROM user WHERE username ='".$username."'";
+
         $tempResult = $dbController->executeQuery($statement);
 
         $value = mysqli_fetch_assoc($tempResult)["id"];
-
-        error_log("User Id: ".$value);
-
 
         return $dbController->getAllBy("article","author_fsid",$value);
 
@@ -104,10 +117,7 @@ class ArticleController
 
         $result = $dbController->executeQuery($statement);
 
-        $propertyName = mysqli_fetch_array($result)[$propertyRow];
-
-        error_log("Result: ".$propertyName);
-        return $propertyName;
+        return mysqli_fetch_array($result)[$propertyRow];
 
     }
 
@@ -126,29 +136,83 @@ class ArticleController
 
         $authorId = mysqli_fetch_assoc($tempResult)["id"];
 
-        error_log("Autor Id: ".$authorId);
-
-        $testVisibility = "4";
-
-        error_log($title);
-        error_log($text);
-        error_log($category);
+        $testVisibility = "2";
 
         //ToDo: Prevent SQL Injection
 
         $statement = "INSERT INTO `article` (`title`, `text`, `author_fsid`, `visibility_fsid`, `category_fsid`) VALUES ('".$title."', '".$text."', '".$authorId."', '".$testVisibility."', '".$category."'); ";
-
-        error_log($statement);
 
         $dbCredentials = new \DbCredentials\DbCredentials();
 
         $dbController = new DbController($dbCredentials);
 
         $result = $dbController->executeQuery($statement);
-
-        error_log($result);
+//
+//        error_log($result);
 
         return $result;
+
+    }
+
+    public function updateArticleInDb($id,$title,$text, $category, $visibility)
+    {
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
+
+        $statement = "UPDATE `article` SET `title`='".$title."',`text`='".$text."', `visibility_fsid`='".$visibility."', `category_fsid`='".$category."' WHERE `id`='".$id."'";
+
+        error_log($statement);
+
+        return $dbController->executeQuery($statement);
+    }
+
+
+
+    public function hasPermissionToEdit($articleId):bool
+    {
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
+        $sessionController = new SessionController();
+
+        $hasPermission = false;
+
+        error_log("called hasPermissionToEdit");
+
+        //checks if the session wasn't manipulated
+        if($sessionController->verifySession()){
+
+            $userController = new UserController();
+
+            if($userController->isAdmin() || $userController->isCurator()){
+                error_log("User has edit rights");
+                $hasPermission = true;
+            }else{
+
+                $username = $_SESSION["username"];
+
+                $statement = "Select id FROM `user` WHERE username ='".$username."'";
+                $tempResult = $dbController->executeQuery($statement);
+
+                $userId = mysqli_fetch_assoc($tempResult)["id"];
+
+               $statement = ("SELECT * FROM `article` WHERE `id`=".$articleId." AND `author_fsid`=".$userId);
+
+               error_log($statement);
+
+                $result = $dbController->executeQuery($statement);
+
+                //is author
+                if ($result->num_rows == 1) {
+                    $hasPermission = true;
+                }
+
+            }
+
+        }else{
+            $hasPermission = false;
+        }
+
+        return $hasPermission;
 
     }
 

@@ -29,6 +29,11 @@
 
       ?>
 
-    <img src="" alt="Obvita Logo" class="logoImage">
+    <div class="headerBox">
+
+        <img src="" alt="Obvita Logo" class="logoImage">
+    </div>
+
+
 
 </header>

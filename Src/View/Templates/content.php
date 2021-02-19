@@ -23,7 +23,7 @@
 <aside>
     <?php
 
-    if(isset($_SESSION["SessionID"]) != null){
+    if(isset($_SESSION["sessionID"]) != null){
 
         include_once "aside.php";
 
@@ -36,7 +36,7 @@
     <?php
 
 
-    if(isset($_SESSION["SessionID"]) != null){
+    if(isset($_SESSION["sessionID"]) != null){
 
         if($_GET["site"] == "articleView"){
             include_once("View/Article/articleView.php");

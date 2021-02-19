@@ -44,11 +44,16 @@ Standard HTML Elements
  */
 
 aside{
+  margin-top: 30px;
   width: 20%;
   float: right;
+  position: fixed;
   .siteElement();
   height: @full;
   min-height: @full;
+  z-index: 1;
+  top: 0;
+  right: 0;
 
   @media (max-width: 768px) {
     width: @full;
@@ -57,8 +62,18 @@ aside{
 }
 
 header {
-  min-height: 100px;
-  background-color: @dark-grey;
+
+  .headerBox{
+    min-height: 50px;
+    max-height: 50px;
+    position: fixed;
+    width: @full;
+    z-index: 100;
+    background-color: @dark-grey;
+  }
+
+  padding-bottom: 40px;
+
 }
 
 footer{
@@ -74,11 +89,12 @@ footer{
 }
 
 main{
+  margin-top: 30px;
   width: 80%;
   float: left;
+  top: 4000px;
 
   @media (max-width: 768px) {
-    clear: both;
     width: @full;
   }
 }

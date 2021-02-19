@@ -64,10 +64,10 @@ class DbController
         $tempCredentialObj = $this->getDbCredentials();
         $tempCredential = $tempCredentialObj->getCredentials();
 
-        error_log( $tempCredential["DB_SERVER"]);
-        error_log($tempCredential["DB_USERNAME"]);
-        error_log($tempCredential["DB_PASSWORD"]);
-        error_log($tempCredential["DB_NAME"]);
+//        error_log( $tempCredential["DB_SERVER"]);
+//        error_log($tempCredential["DB_USERNAME"]);
+//        error_log($tempCredential["DB_PASSWORD"]);
+//        error_log($tempCredential["DB_NAME"]);
 
 
         $connection = new mysqli(
@@ -139,7 +139,6 @@ class DbController
                 $statement = "INSERT INTO `roles` (`id`, `name`) VALUES (NULL, 'admin'), (NULL, 'redaktor'), (NULL, 'user');";
                 $result = mysqli_query($this->getDbConnection(), $statement);
 
-                error_log($result);
 
             }
 
@@ -162,7 +161,6 @@ class DbController
                 $statement = "INSERT INTO `category` (`id`, `name`) VALUES (NULL, 'news'), (NULL, 'general')";
                 $result = mysqli_query($this->getDbConnection(), $statement);
 
-                error_log($result);
             }
 
 
@@ -185,7 +183,6 @@ class DbController
                 $statement = "INSERT INTO `groups` (`id`, `name`) VALUES (NULL, 'internal'), (NULL, 'external'), (NULL, 'full')";
                 $result = mysqli_query($this->getDbConnection(), $statement);
 
-                error_log($result);
 
             }
 
@@ -206,8 +203,6 @@ class DbController
 
                 $statement = "INSERT INTO `groups` (`id`, `name`) VALUES (NULL, 'internal'), (NULL, 'external')";
                 $result = mysqli_query($this->getDbConnection(), $statement);
-
-                error_log($result);
 
             }
 
@@ -271,8 +266,6 @@ class DbController
                 $statement = "INSERT INTO `user` (`id`, `name`,`password`,`roles`) VALUES (NULL, 'admin',".$hashedAdminPassword.")";
                 $result = mysqli_query($this->getDbConnection(), $statement);
 
-                error_log($result);
-
             }
         }
 
@@ -323,10 +316,35 @@ class DbController
     }
 
 
+
+    public function doesExist($table, $tableRow, $toCheck):bool{
+
+        //ToDO: Change to prevent SQL Injections
+
+        $statement = "SELECT * FROM ".$table." WHERE ".$tableRow." = '".$toCheck."'";
+
+
+        $tempResult = $this->executeQuery($statement);
+
+
+        if ($tempResult->num_rows > 0){
+            $doesExist = true;
+        }else{
+            $doesExist = false;
+        }
+
+        return $doesExist;
+
+    }
+
+
+
     //ToDO: Function to call for every user Input, to make sure, SQL Injections aren't possible
     public function invalidateSQLInjection($sqlQuery, $userInput){
 
     }
+
+
 
 
 

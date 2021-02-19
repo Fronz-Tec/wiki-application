@@ -3,11 +3,10 @@
 include_once "DbController.php";
 include_once "Model/DbCredentials.php";
 include_once "UserController.php";
+include_once "SessionController.php";
 
 class LoginController
 {
-
-
 
 
     public function login($inputUsername, $inputPassword){
@@ -15,6 +14,7 @@ class LoginController
         $dbCredentials = new \DbCredentials\DbCredentials();
         $dbController = new DbController($dbCredentials);
         $userController = new UserController();
+        $sessionController = new SessionController();
 
         //Checks if inputed username even exists in the DB
         if($userController->usernameExists($inputUsername)){
@@ -22,8 +22,6 @@ class LoginController
             error_log("Username exists in DB");
 
             $statement = "SELECT password FROM user WHERE  username = '" . $inputUsername . "'";
-            error_log("SELECT * FROM user WHERE username = '" . $inputUsername . "' 
-                AND password = '" . password_hash($inputPassword, PASSWORD_DEFAULT) . "'");
 
             $result = $dbController->executeQuery($statement);
 
@@ -33,15 +31,8 @@ class LoginController
 
                 error_log("Password correct");
 
-                session_start();
-
                 //Creates a unique Session ID
-                $sessionID = uniqid();
-
-                $_SESSION["SessionID"] = $sessionID;
-                $_SESSION["username"] = $inputUsername;
-
-                error_log($_SESSION["SessionID"]);
+                $sessionController->createSession($inputUsername);
 
                 header('location: http://localhost/wiki/?site=articleView');
             }else{

@@ -3,12 +3,14 @@
 
 include_once "DbController.php";
 include_once "Model/DbCredentials.php";
+include_once "SessionController.php";
+
 
 class UserController
 {
 
-    public function createNewUser($username,$email,$password,$role,$group){
-
+    public function createNewUser($username,$email,$password,$role,$group)
+    {
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
@@ -47,7 +49,8 @@ class UserController
     }
 
 
-    public function verifyMail($email):bool{
+    public function verifyMail($email):bool
+    {
         if(filter_var($email,FILTER_VALIDATE_EMAIL)){
             return true;
         }
@@ -55,39 +58,25 @@ class UserController
     }
 
 
-    public function usernameExists($username):bool{
-
-        return $this->doesExist("user","username",$username);
-
-    }
-
-    public function emailExists($email):bool{
-
-        return $this->doesExist("user","mail",$email);
-
-    }
-
-    public function doesExist($table, $tableRow, $toCheck):bool{
-
-        //ToDO: Change to prevent SQL Injections
-        $statement = "SELECT * FROM ".$table." WHERE ".$tableRow." = '".$toCheck."'";
-
+    public function usernameExists($username):bool
+    {
         $dbCredentials = new \DbCredentials\DbCredentials();
-
         $dbController = new DbController($dbCredentials);
 
-        $tempResult = $dbController->executeQuery($statement);
-
-
-        if ($tempResult->num_rows > 0){
-            $doesExist = true;
-        }else{
-            $doesExist = false;
-        }
-
-        return $doesExist;
+        return  $dbController->doesExist("user","username",$username);
 
     }
+
+    public function emailExists($email):bool
+    {
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
+
+        return  $dbController->doesExist("user","mail",$email);
+
+    }
+
+
 
     public function hashPassword($password){
 
@@ -106,13 +95,74 @@ class UserController
     }
 
 
-    public function isAdmin(){
+    public function isAdmin():bool
+    {
+        $sessionController = new SessionController();
+
+        $isAdmin = false;
+
+        if($sessionController->verifySession()){
+
+            if($this->getRoleOfUser() == "1"){
+
+                $isAdmin = true;
+
+            }else{
+
+                $isAdmin = false;
+            }
+        }
+
+        error_log($isAdmin);
+        return $isAdmin;
 
     }
 
-    public function isCurator(){
+
+    public function isCurator():bool
+    {
+        $sessionController = new SessionController();
+
+        $isCurator = false;
+
+        if($sessionController->verifySession()){
+            if($this->getRoleOfUser() == "2") {
+                $isCurator = true;
+            }
+        }
+
+        error_log($isCurator);
+        return $isCurator;
+    }
+
+
+    public function getRoleOfUser()
+    {
+        $sessionController = new SessionController();
+
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
+
+        $userRole = null;
+
+        if($sessionController->verifySession()){
+
+            $username = $_SESSION["username"];
+
+            $user = $dbController->getAllBy("user","username",$username);
+
+            $userRole = $user[0][5];
+
+
+        }
+
+        error_log($userRole);
+
+        return $userRole;
 
     }
+
+
 
 
 

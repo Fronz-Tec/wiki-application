@@ -17,20 +17,22 @@ class UserController
         if($this->usernameExists($username) == true){
 
             //ToDo: Output Message
-            error_log("Username already exists");
         }else{
+
+            error_log("username not exists");
 
             if($this->verifyMail($email) == true){
 
                 if ($this->emailExists($email) == true){
                     //ToDo: Output Message
-                    error_log("Email already exists");
                 }else{
 
-                    error_log("Saving Of User");
+                    error_log("mail not exists");
 
                     //ToDo: Prevent SQL Injection
-                    $statement = "INSERT INTO `user` (`username`, `mail`, `password`, `group_fsid`,`role_fsid`) VALUES ( '".$username."', '".$email."', '".$hashedPassword."', '".$group."' '".$role."');";
+                    $statement = "INSERT INTO `user` (`id`, `username`, `mail`, `password`, `group_fsid`, `role_fsid`, `joindate`, `current_session`) VALUES ( NULL, '".$username."', '".$email."', '".$hashedPassword."', '".$group."', '".$role."',current_timestamp(), NULL);";
+
+                    error_log($statement);
 
                     $dbCredentials = new \DbCredentials\DbCredentials();
                     $dbController = new DbController($dbCredentials);
@@ -39,7 +41,6 @@ class UserController
                 }
             }else{
                 //Todo Output Message
-                error_log("Invalid Mail");
 
                 return null;
             }
@@ -113,7 +114,6 @@ class UserController
             }
         }
 
-        error_log($isAdmin);
         return $isAdmin;
 
     }
@@ -131,7 +131,6 @@ class UserController
             }
         }
 
-        error_log($isCurator);
         return $isCurator;
     }
 
@@ -156,10 +155,53 @@ class UserController
 
         }
 
-        error_log($userRole);
-
         return $userRole;
 
+    }
+
+    public function getUserVisibility()
+    {
+        $sessionController = new SessionController();
+
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
+
+        $userGroup = null;
+
+        if($sessionController->verifySession()){
+
+            $username = $_SESSION["username"];
+
+            $user = $dbController->getAllBy("user","username",$username);
+
+            $userGroup = $user[0][4];
+        }
+
+        return $userGroup;
+
+    }
+
+    public function getUserId():int
+    {
+        $sessionController = new SessionController();
+
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
+
+        $userId = null;
+
+        if($sessionController->verifySession()){
+
+            $username = $_SESSION["username"];
+
+            $user = $dbController->getAllBy("user","username",$username);
+
+            $userId = $user[0][0];
+        }
+
+        error_log("userId: ".$userId);
+
+        return $userId;
     }
 
 

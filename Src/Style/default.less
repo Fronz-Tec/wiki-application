@@ -20,6 +20,7 @@ Variables
 
 //Colors
 @light-grey: #6A7989;
+@lighter-grey: #92A4B7;
 @dark-grey: #4B4B4B;
 @even-darker-grey: #302F33;
 @green: #C8D400;
@@ -36,30 +37,23 @@ Variables
 
 //font-sizes
 @huge: 72px;
+@smallHeader: 24px;
 
 
 
 /*
+The sections are structured as followed:
+
+Section Name
 Standard HTML Elements
+Webkit ELements
+IDs
+Classes
+
+
  */
 
-aside{
-  margin-top: 30px;
-  width: 20%;
-  float: right;
-  position: fixed;
-  .siteElement();
-  height: @full;
-  min-height: @full;
-  z-index: 1;
-  top: 0;
-  right: 0;
 
-  @media (max-width: 768px) {
-    width: @full;
-  }
-
-}
 
 header {
 
@@ -69,7 +63,7 @@ header {
     position: fixed;
     width: @full;
     z-index: 100;
-    background-color: @dark-grey;
+    .siteElement()
   }
 
   padding-bottom: 40px;
@@ -99,40 +93,159 @@ main{
   }
 }
 
-nav{
 
+/*
+General
+*/
+
+.bordered{
+  border: 1px solid @even-darker-grey;
 }
 
-p{
+.curvedTop{
+  border-radius: 15px 15px 0px 0px;
+}
 
+.curvedBottom{
+  border-radius: 0px 0px 15px 15px;
+}
+
+.siteElement{
+  background-color: @light-grey;
+  color: @green;
 }
 
 
-input{
 
+
+/*
+Inputs
+
+*/
+
+.input{
   width: 100%;
+  margin-bottom: 10px;
+  border-color: @even-darker-grey;
+  padding-left: 15px;
 
-  .inputTop{
-    background-color: @dark-grey;
-    .curvedTop();
+}
+
+.inputTop{
+  .curvedTop();
+}
+
+.inputBottom{
+  .curvedBottom();
+}
+
+
+
+
+/*
+Login
+ */
+
+.loginButton{
+  width: 100%;
+  background-color: @lighter-grey;
+  color: @green;
+  .inputBottom();
+}
+
+
+.loginContainer{
+  //margin: 0 auto;
+  width: @half;
+  justify-content: center;
+  margin: 20% 40%;
+
+  @media (max-width: 768px) {
+    margin: 20% auto;
+  }
+
+}
+
+.loginInput{
+  color: @green;
+  background-color: @lighter-grey;
+  .input();
+}
+
+
+
+
+
+/*
+Navigation
+ */
+
+aside{
+  margin-top: 30px;
+  width: 20%;
+  float: right;
+  position: fixed;
+  .siteElement();
+  height: @full;
+  min-height: @full;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  justify-content: center;
+
+
+  @media (max-width: 768px) {
+    width: @full;
+  }
+}
+
+
+.menuButton{
+  background-color: @lighter-grey;
+  color: @green;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  width: 80%;
+  margin-bottom: 2px;
+}
+
+.menuButtonDown{
+  .menuButton();
+  .inputBottom();
+}
+
+.menuButtonUp{
+  .menuButton();
+  .inputTop();
+}
+
+.menuDevider{
+  border: 2px solid @green;
+}
+
+.menuTitle{
+  font-size: @smallHeader;
+
+}
+
+.filterBox{
+  width: 80%;
+  background-color: @lighter-grey;
+  color: @green;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 2px;
+
+  .inputTop();
+
+  &:focus-within{
+    background-color: @light-grey;
   }
 
 }
 
 
-.curvedTop{
-  border-radius: 25px 25px 0px 0px;
-}
-
-
-
-
-/*
-IDs
- */
-
-
-
 
 
 
@@ -141,10 +254,8 @@ IDs
 
 
 /*
-Webkit ELements
+Sidebar
  */
-
-
 
 ::-webkit-scrollbar {
   width: 15px;
@@ -152,7 +263,7 @@ Webkit ELements
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: @dark-grey;
+  background: @light-grey;
 }
 
 /* Handle */
@@ -166,22 +277,18 @@ Webkit ELements
 }
 
 
+
 /*
-Classes
-*/
+Article
+ */
 
+.article{
 
+  p{
+    color: @even-darker-grey;
+  }
 
-.bordered{
-  border: 1px solid @even-darker-grey;
 }
-
-.siteElement{
-  background-color: @dark-grey;
-  color: @green;
-}
-
-
 
 .articleBox{
   width: @full;
@@ -197,17 +304,14 @@ Classes
 }
 
 
-.article{
-
-  p{
-    color: @even-darker-grey;
-  }
 
 
+.articleTitleEdit{
 
-}
+  color: @green;
+  width: 100%;
 
-.articleAuthor{
+
 
 }
 
@@ -226,34 +330,9 @@ Classes
   word-wrap: break-word;
 }
 
-.articleDate{
 
-}
-
-.articleText{
-
-}
-
-
-
-.copyrightText{
-
-}
-
-.logoImage{
+.editButton{
 
 }
 
 
-
-.loginContainer{
-  //margin: 0 auto;
-  width: @half;
-  justify-content: center;
-  margin: 20% 40%;
-
-  @media (max-width: 768px) {
-    margin: 20% auto;
-  }
-
-}

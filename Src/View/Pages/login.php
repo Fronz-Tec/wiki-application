@@ -21,10 +21,10 @@
 
     <form id="loginForm" method="post" action="Controller/EventHandling.php">
 
-        <input type="text" id="usernameInput" name="usernameInput" placeholder="username:" class="inputTop"><br>
-        <input type="password" id="passwordInput" name="passwordInput" placeholder="password:"><br>
+        <input type="text" class="inputTop loginInput" id="usernameInput" name="usernameInput" placeholder="username" ><br>
+        <input type="password" id="passwordInput" class="login loginInput" name="passwordInput" placeholder="password"><br>
         <input type="hidden" id="loginHidden" value="loginHidden" name="loginHidden">
-        <button type="submit" id="submitLogin">Submit</button>
+        <button type="submit" class="loginButton" id="submitLogin">Submit</button>
 
     </form>
 

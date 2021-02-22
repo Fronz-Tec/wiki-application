@@ -6,7 +6,6 @@ class LogoutController
 {
 
     public function logout(){
-        error_log("Logout called");
 
         $sessionController = new SessionController();
         $sessionController->deleteSessionId();

@@ -52,7 +52,6 @@ class ArticleController
     }
 
 
-
     public function getAllByOwn():array
     {
         $dbCredentials = new \DbCredentials\DbCredentials();
@@ -75,9 +74,36 @@ class ArticleController
         $dbCredentials = new \DbCredentials\DbCredentials();
         $dbController = new DbController($dbCredentials);
 
+
         return $dbController->getAllBy("article","category_fsid",$category);
 
+
     }
+
+
+
+    public function getAllPermissionedArticle($condition1,$conditionCheck1,$condition2,$conditionCheck2,$category):array
+    {
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
+
+        if(isset($category)){
+
+            $statement = "SELECT * FROM `article` WHERE `".$condition1."`=".$conditionCheck1.", 
+            OR `".$condition2."`=".$conditionCheck2." AND `category_fsid`=".$category;
+
+            error_log($statement);
+
+            $result = $dbController->executeQuery($statement);
+
+
+        }else{
+            $result = $dbController->getAllByOr("article",$condition1,$conditionCheck1,$condition2,$conditionCheck2);
+        }
+
+        return $result;
+    }
+
 
 
     public function getArticleCategory($articleId): string
@@ -161,8 +187,6 @@ class ArticleController
 
         $statement = "UPDATE `article` SET `title`='".$title."',`text`='".$text."', `visibility_fsid`='".$visibility."', `category_fsid`='".$category."' WHERE `id`='".$id."'";
 
-        error_log($statement);
-
         return $dbController->executeQuery($statement);
     }
 
@@ -176,15 +200,12 @@ class ArticleController
 
         $hasPermission = false;
 
-        error_log("called hasPermissionToEdit");
-
         //checks if the session wasn't manipulated
         if($sessionController->verifySession()){
 
             $userController = new UserController();
 
             if($userController->isAdmin() || $userController->isCurator()){
-                error_log("User has edit rights");
                 $hasPermission = true;
             }else{
 
@@ -196,8 +217,6 @@ class ArticleController
                 $userId = mysqli_fetch_assoc($tempResult)["id"];
 
                $statement = ("SELECT * FROM `article` WHERE `id`=".$articleId." AND `author_fsid`=".$userId);
-
-               error_log($statement);
 
                 $result = $dbController->executeQuery($statement);
 

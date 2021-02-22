@@ -64,12 +64,6 @@ class DbController
         $tempCredentialObj = $this->getDbCredentials();
         $tempCredential = $tempCredentialObj->getCredentials();
 
-//        error_log( $tempCredential["DB_SERVER"]);
-//        error_log($tempCredential["DB_USERNAME"]);
-//        error_log($tempCredential["DB_PASSWORD"]);
-//        error_log($tempCredential["DB_NAME"]);
-
-
         $connection = new mysqli(
             $tempCredential["DB_SERVER"],
             $tempCredential["DB_USERNAME"],
@@ -313,6 +307,47 @@ class DbController
         }
 
         return $result;
+    }
+
+    public function getAllByAnd($table,$condition1,$conditionCheck1,$condition2,$conditionCheck2):array
+    {
+        $statement = "SELECT * FROM `".$table."` WHERE ".$condition1."='".$conditionCheck1."' 
+        AND ".$condition2."='".$conditionCheck2."'";
+
+        $result = array();
+
+        $tempResult = $this->executeQuery($statement);
+
+        while ($entry = mysqli_fetch_array($tempResult)) {
+
+            array_push($result, $entry);
+
+        }
+
+        return $result;
+
+    }
+
+    public function getAllByOr($table,$condition1,$conditionCheck1,$condition2,$conditionCheck2):array
+    {
+        $statement = "SELECT * FROM `".$table."` WHERE `".$condition1."`=".$conditionCheck1." 
+        OR `".$condition2."`=".$conditionCheck2;
+
+        error_log($statement);
+
+        $result = array();
+
+        $tempResult = $this->executeQuery($statement);
+
+        while ($entry = mysqli_fetch_array($tempResult)) {
+
+            array_push($result, $entry);
+
+        }
+
+
+        return $result;
+
     }
 
 

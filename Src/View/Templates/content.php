@@ -18,8 +18,12 @@
  *
  */
 
-?>
+if(isset($_GET["site"])){
+    if($_GET["site"] != "login"){
 
+
+
+?>
 <aside>
     <?php
 
@@ -28,9 +32,14 @@
         include_once "aside.php";
 
     }
+}
 
     ?>
 </aside>
+
+<?php
+}
+?>
 
 <main>
     <?php

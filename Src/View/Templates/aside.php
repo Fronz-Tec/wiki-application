@@ -27,29 +27,69 @@
     <?php
 
     include_once "Controller/UserController.php";
+    include_once "Controller/ArticleController.php";
+    include_once "Controller/CategoryController.php";
+
+    $categoryController = new CategoryController();
 
     $userController = new UserController();
+    $articleController = new ArticleController();
 
 
     echo "<p>test</p>";
 
-        if($_GET["site"] == "articleCreation" || $_GET["site"] == "articleCreation" && isset($_GET["articleId"])){
+        if($_GET["site"] == "articleCreation"){
 
             echo "<button type='submit' form='articleCreationForm'>Save Article</button>";
+
+            if($_GET["site"] == "articleCreation" && isset($_GET["articleId"])){
+
+                $currentArticleId = $_GET["articleId"];
+
+                echo "
+                    <form  method='post' action='Controller/EventHandling.php'>
+                        <p class='menuTitle'>Add Links</p>
+                        <input type='text' name='linkURL' id='linkURL' placeholder='URL' required>
+                        <input type='text' name='linkName' id='linkName' placeholder='Title' required>
+                        <input type='hidden' name='linkHidden' id='linkHidden' value='".$currentArticleId."'>
+                        <button type='submit'>Save Link</button>
+                       </form>
+                    
+                ";
+
+
+            }
 
         }
 
         if($_GET["site"] == "articleView"){
             echo "
-                <p class='menuText'>Create</p>
+                <p class='menuTitle'>Filter</p>
+                <form method='post' action='Controller/EventHandling.php'>
+                <select class='filterBox' name='categoryFilter' id='categoryFilter'>";
+
+            $categories = $categoryController->getAllCategories();
+
+            foreach ($categories as $category){
+                echo "<option value='".$category["id"]."'>".$category["name"]."</option>";
+            }
+
+            echo"</select><br>
+                    <input type='hidden' id='filter' name='filter'>
+                    <button class='menuButtonDown' type='submit'>Apply</button>
+                </form>
+
+                <hr class='menuDevider'>
+
+                <p class='menuTitle'>Create</p>
                 <form method='post' action='Controller/EventHandling.php'>
                     <input type='hidden' id='createNew' name='createNew'>
-                    <button type='submit'>Create New</button>
+                    <button class='menuButtonUp' type='submit'>Create New</button>
                 </form>
                 
                 <form method='post' action='Controller/EventHandling.php'>
                     <input type='hidden' id='editArticle' name='editArticle'>
-                    <button type='submit'>Edit</button>
+                    <button class='menuButtonDown' type='submit'>Edit</button>
                 </form>
                 
                 <hr class='menuDevider'>
@@ -60,19 +100,25 @@
 
         if ($userController->isAdmin()){
 
-            echo "<form method='post' action='Controller/EventHandling.php'>
+            echo "<p class='menuTitle'>User</p>
+                <form method='post' action='Controller/EventHandling.php'>
                     <input type='hidden' name='userCreation'>
-                    <button type='submit'>Create User</button>
-                </form>";
+                    <button class='menuButtonUp' type='submit'>Create User</button>
+                </form>
+                ";
         }
+        echo "<form method='post' action='Controller/EventHandling.php'>
+                   <input type='hidden' name='userEdit'>
+                   <button class='menuButtonDown' type='submit'>Edit Profile</button>
+               </form>
+               <hr class='menuDevider'>";
+
 
     ?>
 
     <form method="post" action="Controller/EventHandling.php">
         <input type="hidden" name="logout" id="logout">
-        <button type="submit">Logout</button>
+        <button type="submit" class='menuButtonDown'>Logout</button>
     </form>
-
-    <p>agsdzhadha</p>
 
 </div>

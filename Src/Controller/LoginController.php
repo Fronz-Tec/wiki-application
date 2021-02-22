@@ -19,8 +19,6 @@ class LoginController
         //Checks if inputed username even exists in the DB
         if($userController->usernameExists($inputUsername)){
 
-            error_log("Username exists in DB");
-
             $statement = "SELECT password FROM user WHERE  username = '" . $inputUsername . "'";
 
             $result = $dbController->executeQuery($statement);
@@ -28,8 +26,6 @@ class LoginController
             $value = mysqli_fetch_array($result)["password"];
 
             if (password_verify($inputUsername, $value)) {
-
-                error_log("Password correct");
 
                 //Creates a unique Session ID
                 $sessionController->createSession($inputUsername);
@@ -40,8 +36,6 @@ class LoginController
             }
 
         }else{
-            error_log("Password incorrect");
-
             header('location: http://localhost/wiki/?site=login%20message=failed');
         }
 

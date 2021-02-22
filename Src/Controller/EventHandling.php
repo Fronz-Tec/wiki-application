@@ -19,6 +19,7 @@
 
 include_once "ArticleController.php";
 include_once "UserController.php";
+include_once "LinkController.php";
 
 include_once "LoginController.php";
 include_once "LogoutController.php";
@@ -26,6 +27,7 @@ include_once "LogoutController.php";
 
 $articleController = new ArticleController();
 $userController = new UserController();
+$linkController = new LinkController();
 
 $loginController = new LoginController();
 $logoutController = new LogoutController();
@@ -46,7 +48,6 @@ if (isset($_POST["articleTest"])){
 
 //Article Save Event
 if (isset($_POST["articleHidden"]) && isset($_POST["articleTitle"]) && isset($_POST["articleText"])){
-    error_log("Article save event called");
     $articleController->saveArticleInDb($_POST["articleTitle"],$_POST["articleText"],$_POST["articleCategory"]);
     header('location: http://localhost/wiki/?site=articleView');
 }
@@ -60,7 +61,6 @@ if (isset($_POST["articleHiddenUpdate"]) && isset($_POST["articleTitle"]) && iss
         $visibility = 2;
     }
 
-    error_log("Article update event called");
     $articleController->updateArticleInDb($_POST["articleId"],$_POST["articleTitle"],$_POST["articleText"],$_POST["articleCategory"], $visibility);
 
     header('location: http://localhost/wiki/?site=articleView');
@@ -70,7 +70,6 @@ if (isset($_POST["articleHiddenUpdate"]) && isset($_POST["articleTitle"]) && iss
 
 //Login Event
 if (isset($_POST["loginHidden"]) && isset($_POST["usernameInput"]) && isset($_POST["passwordInput"])){
-    error_log("Login Event called");
 
     $username = $_POST["usernameInput"];
     $password = $_POST["passwordInput"];
@@ -91,8 +90,35 @@ if(isset($_POST["newUserHidden"])){
 
     $userController->createNewUser($username,$email,$password,$role,$group);
 
+    header('location: http://localhost/wiki/?site=articleView');
+
     error_log("New User Save Event called");
 }
+
+
+if(isset($_POST["linkHidden"])){
+
+    $linkURL = $_POST["linkURL"];
+    $linkName = $_POST["linkName"];
+    $currentArticleId = $_POST["linkHidden"];
+
+    $linkController->saveLink($linkURL,$linkName,$currentArticleId);
+
+    header('location: http://localhost/wiki/?site=articleCreation&articleId='.$currentArticleId);
+
+}
+
+if(isset($_POST["filter"])){
+
+    $filterWord = $_POST["categoryFilter"];
+
+    error_log($filterWord);
+
+    header('location: http://localhost/wiki/?site=articleView&category='.$filterWord);
+}
+
+
+
 
 //route to articleCreation
 if(isset($_POST["createNew"])){

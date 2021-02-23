@@ -29,42 +29,56 @@
     include_once "Controller/UserController.php";
     include_once "Controller/ArticleController.php";
     include_once "Controller/CategoryController.php";
+    include_once "Controller/VisibilityController.php";
 
     $categoryController = new CategoryController();
 
     $userController = new UserController();
     $articleController = new ArticleController();
-
-
-    echo "<p>test</p>";
+    $visibilityController = new VisibilityController();
 
         if($_GET["site"] == "articleCreation"){
 
-            echo "<button type='submit' form='articleCreationForm'>Save Article</button>";
+            echo "<p class='menuTitle'>Save Article</p>
+            <div class='menuWrapper'>
+                <select class='filterBox' name='visibilityFilter' id='categoryFilter' form='articleCreationForm'>";
+
+                if($userController->isAdmin() || $userController->isCurator()){
+                    $visibilities = $visibilityController->getAlVisibilities();
+                }else{
+                    $visibilities = $visibilityController->getUserVisibility();
+                }
+
+                foreach ($visibilities as $visibility){
+                    echo "<option value='".$visibility["id"]."'>".$visibility["name"]."</option>";
+                }
+
+                echo "</select>
+                <button type='submit' form='articleCreationForm' class='menuButtonDown'>Save Article</button>
+            </div>
+            <hr class='menuDivider'>";
 
             if($_GET["site"] == "articleCreation" && isset($_GET["articleId"])){
 
                 $currentArticleId = $_GET["articleId"];
 
-                echo "
-                    <form  method='post' action='Controller/EventHandling.php'>
-                        <p class='menuTitle'>Add Links</p>
-                        <input type='text' name='linkURL' id='linkURL' placeholder='URL' required>
-                        <input type='text' name='linkName' id='linkName' placeholder='Title' required>
-                        <input type='hidden' name='linkHidden' id='linkHidden' value='".$currentArticleId."'>
-                        <button type='submit'>Save Link</button>
-                       </form>
-                    
-                ";
-
-
+                echo "<div class='menuWrapper'>
+                        <form  method='post' action='Controller/EventHandling.php'>
+                            <p class='menuTitle'>Add Links</p>
+                            <input type='text' class='menuInputTop' name='linkURL' id='linkURL' placeholder='URL' required>
+                            <input type='text' class='menuInput' name='linkName' id='linkName' placeholder='Title' required>
+                            <input type='hidden' name='linkHidden' id='linkHidden' value='".$currentArticleId."'>
+                            <button type='submit' class='menuButtonDown'>Save Link</button>
+                           </form>
+                    </div>
+                    <hr class='menuDivider'>";
             }
 
         }
 
         if($_GET["site"] == "articleView"){
-            echo "
-                <p class='menuTitle'>Filter</p>
+            echo "<p class='menuTitle'>Filter</p>
+                <div class='menuWrapper'>
                 <form method='post' action='Controller/EventHandling.php'>
                 <select class='filterBox' name='categoryFilter' id='categoryFilter'>";
 
@@ -74,25 +88,28 @@
                 echo "<option value='".$category["id"]."'>".$category["name"]."</option>";
             }
 
-            echo"</select><br>
+            echo "</select><br>
                     <input type='hidden' id='filter' name='filter'>
                     <button class='menuButtonDown' type='submit'>Apply</button>
                 </form>
+                </div>
 
-                <hr class='menuDevider'>
+                <hr class='menuDivider'>
 
                 <p class='menuTitle'>Create</p>
-                <form method='post' action='Controller/EventHandling.php'>
-                    <input type='hidden' id='createNew' name='createNew'>
-                    <button class='menuButtonUp' type='submit'>Create New</button>
-                </form>
+                <div class='menuWrapper'>
+                    <form method='post' action='Controller/EventHandling.php'>
+                        <input type='hidden' id='createNew' name='createNew'>
+                        <button class='menuButtonUp' type='submit'>Create New</button>
+                    </form>
+                    
+                    <form method='post' action='Controller/EventHandling.php'>
+                        <input type='hidden' id='editArticle' name='editArticle'>
+                        <button class='menuButtonDown' type='submit'>Edit</button>
+                    </form>
+                </div>
                 
-                <form method='post' action='Controller/EventHandling.php'>
-                    <input type='hidden' id='editArticle' name='editArticle'>
-                    <button class='menuButtonDown' type='submit'>Edit</button>
-                </form>
-                
-                <hr class='menuDevider'>
+                <hr class='menuDivider'>
                 
             ";
         }
@@ -101,24 +118,27 @@
         if ($userController->isAdmin()){
 
             echo "<p class='menuTitle'>User</p>
-                <form method='post' action='Controller/EventHandling.php'>
-                    <input type='hidden' name='userCreation'>
-                    <button class='menuButtonUp' type='submit'>Create User</button>
-                </form>
+                <div class='menuWrapper'>
+                    <form method='post' action='Controller/EventHandling.php'>
+                        <input type='hidden' name='userCreation'>
+                        <button class='menuButtonUp' type='submit'>Create User</button>
+                    </form>
                 ";
         }
         echo "<form method='post' action='Controller/EventHandling.php'>
                    <input type='hidden' name='userEdit'>
                    <button class='menuButtonDown' type='submit'>Edit Profile</button>
                </form>
-               <hr class='menuDevider'>";
+               </div>
+               <hr class='menuDivider'>";
 
 
     ?>
-
-    <form method="post" action="Controller/EventHandling.php">
-        <input type="hidden" name="logout" id="logout">
-        <button type="submit" class='menuButtonDown'>Logout</button>
-    </form>
+    <div class='menuWrapper'>
+        <form method="post" action="Controller/EventHandling.php">
+            <input type="hidden" name="logout" id="logout">
+            <button type="submit" class='menuButtonDown'>Logout</button>
+        </form>
+    </div>
 
 </div>

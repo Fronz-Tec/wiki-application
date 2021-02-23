@@ -48,17 +48,18 @@ if (isset($_POST["articleTest"])){
 
 //Article Save Event
 if (isset($_POST["articleHidden"]) && isset($_POST["articleTitle"]) && isset($_POST["articleText"])){
-    $articleController->saveArticleInDb($_POST["articleTitle"],$_POST["articleText"],$_POST["articleCategory"]);
+    $articleController->saveArticleInDb($_POST["articleTitle"],$_POST["articleText"],$_POST["articleCategory"],
+        $_POST["visibilityFilter"]);
     header('location: http://localhost/wiki/?site=articleView');
 }
 
 //Article Update Event
 if (isset($_POST["articleHiddenUpdate"]) && isset($_POST["articleTitle"]) && isset($_POST["articleText"])){
 
-    if($_POST["visibility"]){
-        $visibility = $_POST["visibility"];
+    if($_POST["visibilityFilter"]){
+        $visibility = $_POST["visibilityFilter"];
     }else{
-        $visibility = 2;
+        $visibility = 5;
     }
 
     $articleController->updateArticleInDb($_POST["articleId"],$_POST["articleTitle"],$_POST["articleText"],$_POST["articleCategory"], $visibility);

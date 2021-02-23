@@ -156,7 +156,7 @@ class ArticleController
     }
 
     //ToDo: Make Article Creation
-    public function saveArticleInDb($title,$text, $category){
+    public function saveArticleInDb($title,$text, $category,$visibility){
 
         $dbCredentials = new \DbCredentials\DbCredentials();
         $dbController = new DbController($dbCredentials);
@@ -170,19 +170,16 @@ class ArticleController
 
         $authorId = mysqli_fetch_assoc($tempResult)["id"];
 
-        $testVisibility = "2";
-
         //ToDo: Prevent SQL Injection
 
-        $statement = "INSERT INTO `article` (`title`, `text`, `author_fsid`, `visibility_fsid`, `category_fsid`) VALUES ('".$title."', '".$text."', '".$authorId."', '".$testVisibility."', '".$category."'); ";
+        $statement = "INSERT INTO `article` (`title`, `text`, `author_fsid`, `visibility_fsid`, `category_fsid`) 
+        VALUES ('".htmlspecialchars($title, ENT_SUBSTITUTE)."', '".htmlspecialchars($text, ENT_SUBSTITUTE)."', 
+        '".$authorId."', '".$visibility."', '".$category."'); ";
 
-        $dbCredentials = new \DbCredentials\DbCredentials();
 
-        $dbController = new DbController($dbCredentials);
+        error_log($statement);
 
         $result = $dbController->executeQuery($statement);
-//
-//        error_log($result);
 
         return $result;
 
@@ -193,7 +190,10 @@ class ArticleController
         $dbCredentials = new \DbCredentials\DbCredentials();
         $dbController = new DbController($dbCredentials);
 
-        $statement = "UPDATE `article` SET `title`='".$title."',`text`='".$text."', `visibility_fsid`='".$visibility."', `category_fsid`='".$category."' WHERE `id`='".$id."'";
+        $statement = "UPDATE `article` SET `title`='".htmlspecialchars($title)."',`text`='".htmlspecialchars($text)."', `visibility_fsid`='".$visibility."', 
+        `category_fsid`='".$category."' WHERE `id`='".$id."'";
+
+        error_log($statement);
 
         return $dbController->executeQuery($statement);
     }

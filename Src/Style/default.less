@@ -6,12 +6,23 @@
 *
 * Since 16.02.21
 *
-* Version: 0.1
+* Version: 0.8
 *
  */
 
 
-
+/*
+*The sections are structured as followed:
+*
+*Section Name
+*Standard HTML Elements
+*Webkit ELements
+*IDs
+*Classes
+*
+*All subsections are ordered alphabetical
+*
+*/
 
 
 /*
@@ -19,16 +30,12 @@ Variables
  */
 
 //Colors
-@light-grey: #6A7989;
-@lighter-grey: #92A4B7;
 @dark-grey: #4B4B4B;
 @even-darker-grey: #302F33;
 @green: #C8D400;
+@light-grey: #6A7989;
+@lighter-grey: #92A4B7;
 @white: #f7f7f7;
-
-
-//Fonts
-
 
 //Sizes
 @full: 100%;
@@ -39,36 +46,17 @@ Variables
 @huge: 72px;
 @smallHeader: 24px;
 
+//Fonts
+
+
+
+
+
 
 
 /*
-The sections are structured as followed:
-
-Section Name
-Standard HTML Elements
-Webkit ELements
-IDs
-Classes
-
-
- */
-
-
-
-header {
-
-  .headerBox{
-    min-height: 50px;
-    max-height: 50px;
-    position: fixed;
-    width: @full;
-    z-index: 100;
-    .siteElement()
-  }
-
-  padding-bottom: 40px;
-
-}
+*General
+*/
 
 footer{
   clear: both;
@@ -82,6 +70,20 @@ footer{
   .siteElement();
 }
 
+header {
+  padding-bottom: 40px;
+
+  .headerBox{
+    min-height: 50px;
+    max-height: 50px;
+    position: fixed;
+    width: @full;
+    z-index: 100;
+    .siteElement()
+  }
+}
+
+
 main{
   margin-top: 30px;
   width: 80%;
@@ -93,23 +95,28 @@ main{
   }
 }
 
+textarea{
+  width: @full;
+  min-height: 400px;
+  margin-top: 20px;
+}
 
-/*
-General
-*/
-
+//For elements with borders
 .bordered{
   border: 1px solid @even-darker-grey;
 }
 
-.curvedTop{
-  border-radius: 15px 15px 0px 0px;
-}
-
+//For elements with curved borders on bottom
 .curvedBottom{
   border-radius: 0px 0px 15px 15px;
 }
 
+//For elements with curved borders on top
+.curvedTop{
+  border-radius: 15px 15px 0px 0px;
+}
+
+//For elements of the site such as footer, header,etc to have a standart appereance
 .siteElement{
   background-color: @light-grey;
   color: @green;
@@ -117,12 +124,76 @@ General
 
 
 
+/*
+Article
+ */
+
+//General article class
+.article{
+
+  p{
+    color: @even-darker-grey;
+  }
+
+}
+
+//the box containing the articles
+
+//.articleBox {
+//  width: 95%;
+//  .bordered();
+//
+//  @media (max-width: 768px) {
+//    clear: both;
+//    width: @full;
+//  }
+//}
+
+.articleBox{
+  width: 95%;
+  .bordered();
+  margin-top: 25px;
+  margin-bottom: 75px;
+
+  @media (max-width: 768px) {
+    clear: both;
+    width: @full;
+  }
+
+  h1{
+    color: @green;
+    text-align: center;
+  }
+
+}
+
+
+//TTitle for editing articles in articleCreation
+.articleTitleEdit{
+  color: @green;
+  width: 100%;
+}
+
+
+
+
+
+.articleContainer{
+  word-wrap: break-word;
+}
+
+
+.editButton{
+
+}
+
+
 
 /*
-Inputs
-
+*Inputs
 */
 
+//For general input fields
 .input{
   width: 100%;
   margin-bottom: 10px;
@@ -131,10 +202,12 @@ Inputs
 
 }
 
+//for inputs that habe curved tops
 .inputTop{
   .curvedTop();
 }
 
+//for inputs with a curved bottom
 .inputBottom{
   .curvedBottom();
 }
@@ -146,6 +219,7 @@ Inputs
 Login
  */
 
+//Login Button
 .loginButton{
   width: 100%;
   background-color: @lighter-grey;
@@ -153,7 +227,7 @@ Login
   .inputBottom();
 }
 
-
+//The container that contains the login field
 .loginContainer{
   //margin: 0 auto;
   width: @half;
@@ -166,6 +240,7 @@ Login
 
 }
 
+//Special login input
 .loginInput{
   color: @green;
   background-color: @lighter-grey;
@@ -181,7 +256,7 @@ Navigation
  */
 
 aside{
-  margin-top: 30px;
+  margin-top: 50px;
   width: 20%;
   float: right;
   position: fixed;
@@ -199,56 +274,82 @@ aside{
   }
 }
 
-
-.menuButton{
-  background-color: @lighter-grey;
-  color: @green;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  width: 80%;
-  margin-bottom: 2px;
-}
-
-.menuButtonDown{
-  .menuButton();
-  .inputBottom();
-}
-
-.menuButtonUp{
-  .menuButton();
-  .inputTop();
-}
-
-.menuDevider{
-  border: 2px solid @green;
-}
-
-.menuTitle{
-  font-size: @smallHeader;
-
-}
-
+//select box to filter stuff
 .filterBox{
-  width: 80%;
+  width: @full;
   background-color: @lighter-grey;
   color: @green;
   padding-left: 15px;
   padding-right: 15px;
   margin-bottom: 2px;
-
   .inputTop();
-
   &:focus-within{
     background-color: @light-grey;
   }
 
 }
 
+//Button in menu
+.menuButton{
+  background-color: @lighter-grey;
+  color: @green;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  width: @full;
+  margin-bottom: 2px;
+}
 
+//For menu buttons with rounded border down
+.menuButtonDown{
+  .menuButton();
+  .inputBottom();
+}
 
+//For menu buttons with rounded border up
+.menuButtonUp{
+  .menuButton();
+  .inputTop();
+}
 
+//the devider element in the menu
+.menuDivider{
+  border: 2px solid @green;
+}
 
+.menuInput{
+  width: @full;
+  margin-bottom: 2px;
+  background-color: @lighter-grey;
+  color: @green;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.menuInputTop{
+  .curvedTop();
+  .menuInput();
+
+}
+
+//Menu Titles
+.menuTitle{
+  font-size: @smallHeader;
+}
+
+.menuWrapper{
+  width: 90%;
+  margin: 0 auto;
+  align-content: center;
+  align-items: center;
+  align-self: center;
+}
+
+.sideMenu{
+  margin: 0 auto;
+  justify-content: center;
+  align-content: center;
+}
 
 
 
@@ -261,11 +362,6 @@ Sidebar
   width: 15px;
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: @light-grey;
-}
-
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: @even-darker-grey;
@@ -276,63 +372,14 @@ Sidebar
   background: @green;
 }
 
-
-
-/*
-Article
- */
-
-.article{
-
-  p{
-    color: @even-darker-grey;
-  }
-
-}
-
-.articleBox{
-  width: @full;
-  .bordered();
-  margin-top: 25px;
-  margin-bottom: 15px;
-
-  h1{
-    color: @green;
-    text-align: center;
-  }
-
+/* Track */
+::-webkit-scrollbar-track {
+  background: @light-grey;
 }
 
 
 
 
-.articleTitleEdit{
 
-  color: @green;
-  width: 100%;
-
-
-
-}
-
-.articleBox{
-  width: 95%;
-  .bordered();
-
-  @media (max-width: 768px) {
-    clear: both;
-    width: @full;
-  }
-
-}
-
-.articleContainer{
-  word-wrap: break-word;
-}
-
-
-.editButton{
-
-}
 
 

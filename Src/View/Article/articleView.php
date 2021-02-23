@@ -82,9 +82,12 @@
 
                     echo "
                             <div class='articleBox'>
-                                <div class='container-fluid'>
-                                    <p>" . $article["visibility_fsid"] . "</p>
-                                    <div class='row'>
+                                <div class='container-fluid'>";
+
+                    //For Debugging Only
+//                                   echo "<p>" . $article["visibility_fsid"] . "</p>";
+
+                                    echo"<div class='row'>
                                         
                                         <span class='col-sm-2'>
                                             <p class='articleCategory'>" . $currentArticleCategory . "</p>

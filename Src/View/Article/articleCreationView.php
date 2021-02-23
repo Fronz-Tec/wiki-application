@@ -32,25 +32,8 @@ $visibilityController = new VisibilityController();
 
                         $loadedArticle = $articleController->getArticleById($articleId);
 
-                        if($userController->isAdmin() || $userController->isCurator()){
-                            echo" <span class='col-sm-1'>
-                            <select id='articleVisibility' name='articleVisibility'>";
-
-                            $visibilities = $visibilityController->getAlVisibilities();
-
-                            foreach ($visibilities as $visibility){
-                                echo "<option value='".$visibility["id"]."'>".$visibility["name"]."</option>";
-                            }
-
-                            echo"</select>
-                                </span>
-
-                                <span class='col-sm-1'>";
-                        }else{
-                            echo "<span class='col-sm-2'>";
-                        }
-
                     ?>
+                        <span class='col-sm-2'>
                         <select id="articleCategory" name="articleCategory">
                             <?php
 
@@ -78,15 +61,15 @@ $visibilityController = new VisibilityController();
                         <input type='hidden' id='articleHiddenUpdate' name='articleHiddenUpdate'>
                         <input type='hidden' id='articleId' name='articleId' value='".$loadedArticle[0][0]."'>
         
-                        <span class='col-sm-2'></span>
+                        <span class='col-sm-1'></span>
                         
-                        <span class='col-sm-8'>
+                        <span class='col-sm-10'>
                             <textarea id='articleText' name='articleText' class='articleText'required>
                                 ".$loadedArticle[0][3]."
                             </textarea>
                         </span>
                         
-                        <span class='col-sm-2'></span>
+                        <span class='col-sm-1'></span>
                         
                     </div>";
 
@@ -134,10 +117,6 @@ $visibilityController = new VisibilityController();
                 <?php
                 }
                 ?>
-
-
-
-
 
             </div>
         </form>

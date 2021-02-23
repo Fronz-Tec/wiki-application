@@ -63,6 +63,10 @@ class SessionController
         $dbCredentials = new \DbCredentials\DbCredentials();
         $dbController = new DbController($dbCredentials);
 
+        if(!isset($_SESSION)){
+            session_start();
+        }
+
         $username = $_SESSION["username"];
 
         $statement = "Select current_session FROM user WHERE username ='".$username."'";

@@ -122,16 +122,16 @@ class DbController
                 PRIMARY KEY (id)
             )";
 
-            mysqli_query($connection, $sql);
+            $resultRoles = $this->executeQuery($sql);
 
             //Checks if Roles is empty
             $statementRoles = "SELECT * FROM `roles` WHERE id > 0";
-            $resultRoles = mysqli_query($this->getDbConnection(), $statementRoles);
+            $resultRoles = $this->executeQuery($statementRoles);
 
             if ($resultRoles->num_rows < 1) {
 
-                $statement = "INSERT INTO `roles` (`id`, `name`) VALUES (NULL, 'admin'), (NULL, 'redaktor'), (NULL, 'user');";
-                $result = mysqli_query($this->getDbConnection(), $statement);
+                $statement = "INSERT INTO `roles` (`id`, `name`) VALUES (NULL, 'admin'), (NULL, 'redaktor'), (NULL, 'user'),(NULL,'disabled');";
+                $result = $resultRoles = $this->executeQuery($statement);
 
 
             }
@@ -144,16 +144,16 @@ class DbController
                 PRIMARY KEY (id)
             )";
 
-            mysqli_query($connection, $sql);
+            $resultRoles = $this->executeQuery($sql);
 
             //Checks if Category is empty
             $statementCategory = "SELECT * FROM `category` WHERE id > 0";
-            $resultCategory = mysqli_query($this->getDbConnection(), $statementCategory);
+            $resultCategory = $resultRoles = $this->executeQuery($statementCategory);
 
             if ($resultCategory->num_rows < 1) {
 
                 $statement = "INSERT INTO `category` (`id`, `name`) VALUES (NULL, 'news'), (NULL, 'general')";
-                $result = mysqli_query($this->getDbConnection(), $statement);
+                $result = $resultRoles = $this->executeQuery($statement);
 
             }
 
@@ -170,12 +170,12 @@ class DbController
 
             //Checks if Visibility is empty
             $statementGroups = "SELECT * FROM `visibility` WHERE id > 0";
-            $resultGroups = mysqli_query($this->getDbConnection(), $statementGroups);
+            $resultGroups = $resultRoles = $this->executeQuery($statementGroups);
 
             if ($resultGroups->num_rows < 1) {
 
                 $statement = "INSERT INTO `groups` (`id`, `name`) VALUES (NULL, 'internal'), (NULL, 'external'), (NULL, 'full')";
-                $result = mysqli_query($this->getDbConnection(), $statement);
+                $result = $resultRoles = $this->executeQuery($statement);
 
 
             }
@@ -187,16 +187,16 @@ class DbController
                 PRIMARY KEY (id)
             )";
 
-            mysqli_query($connection, $sql);
+            $resultRoles = $this->executeQuery($sql);
 
             //Checks if Groups is empty
             $statementGroups = "SELECT * FROM `groups` WHERE id > 0";
-            $resultGroups = mysqli_query($this->getDbConnection(), $statementGroups);
+            $resultGroups = $resultRoles = $this->executeQuery($statementGroups);
 
             if ($resultGroups->num_rows < 1) {
 
                 $statement = "INSERT INTO `groups` (`id`, `name`) VALUES (NULL, 'internal'), (NULL, 'external')";
-                $result = mysqli_query($this->getDbConnection(), $statement);
+                $result = $resultRoles = $this->executeQuery($statement);
 
             }
 
@@ -216,7 +216,7 @@ class DbController
                   FOREIGN KEY (category_fsid) REFERENCES 'category' (id), 
                 )";
 
-            mysqli_query($connection, $sql);
+            $resultRoles = $this->executeQuery($sql);
 
 
             //create links
@@ -229,7 +229,7 @@ class DbController
                   FOREIGN KEY (category_fsid) REFERENCES 'category' (id),
                 )";
 
-            mysqli_query($connection, $sql);
+            $resultRoles = $this->executeQuery($sql);
 
 
             //create user
@@ -241,16 +241,17 @@ class DbController
                   `group_fsid` int(11) NOT NULL,
                   `role_fsid` int(11) NOT NULL,
                   `joindate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+                  `current_session` varchar(255) NOT NULL,
                    PRIMARY KEY (`id`),
                    FOREIGN KEY (`group_fsid`) REFERENCES `groups` (`id`),
                    FOREIGN KEY (`role_fsid`) REFERENCES `roles` (`id`)
                 )";
 
-            mysqli_query($connection, $sql);
+            $resultRoles = $this->executeQuery($sql);
 
 
             $statementUser = "SELECT * FROM `user` WHERE id > 0";
-            $resultUser = mysqli_query($this->getDbConnection(), $statementUser);
+            $resultUser = $resultRoles = $this->executeQuery($statementUser);
 
             if ($resultUser->num_rows < 1) {
 
@@ -258,7 +259,7 @@ class DbController
                 $hashedAdminPassword = password_hash($adminPassword, PASSWORD_DEFAULT);
 
                 $statement = "INSERT INTO `user` (`id`, `name`,`password`,`roles`) VALUES (NULL, 'admin',".$hashedAdminPassword.")";
-                $result = mysqli_query($this->getDbConnection(), $statement);
+                $result = $resultRoles = $this->executeQuery($statement);
 
             }
         }

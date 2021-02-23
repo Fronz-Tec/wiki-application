@@ -95,6 +95,23 @@ if(isset($_POST["newUserHidden"])){
     error_log("New User Save Event called");
 }
 
+if(isset($_POST["userEdit"])){
+    header('location: http://localhost/wiki/?site=userProfile');
+}
+
+if(isset($_POST["editProfile"])){
+
+    $password = $_POST["changePassword"];
+    $role = $_POST["role"];
+    $id = $_POST["userId"];
+
+    $userController->updateUser($password,$role,$id);
+
+
+    header('location: http://localhost/wiki/?site=articleView');
+
+}
+
 
 if(isset($_POST["linkHidden"])){
 

@@ -87,14 +87,22 @@ class ArticleController
         $dbCredentials = new \DbCredentials\DbCredentials();
         $dbController = new DbController($dbCredentials);
 
+        $result= array();
+
         if(isset($category)){
 
-            $statement = "SELECT * FROM `article` WHERE `".$condition1."`=".$conditionCheck1.", 
-            OR `".$condition2."`=".$conditionCheck2." AND `category_fsid`=".$category;
+            $statement = "SELECT * FROM `article` WHERE `".$condition1."`=".$conditionCheck1." 
+            AND `category_fsid`=".$category." OR `".$condition2."`=".$conditionCheck2." AND `category_fsid`=".$category;
 
             error_log($statement);
 
-            $result = $dbController->executeQuery($statement);
+            $tempResult = $dbController->executeQuery($statement);
+
+            while ($entry = mysqli_fetch_array($tempResult)) {
+
+                array_push($result, $entry);
+
+            }
 
 
         }else{

@@ -30,7 +30,9 @@ class UserController
                     error_log("mail not exists");
 
                     //ToDo: Prevent SQL Injection
-                    $statement = "INSERT INTO `user` (`id`, `username`, `mail`, `password`, `group_fsid`, `role_fsid`, `joindate`, `current_session`) VALUES ( NULL, '".$username."', '".$email."', '".$hashedPassword."', '".$group."', '".$role."',current_timestamp(), NULL);";
+                    $statement = "INSERT INTO `user` (`id`, `username`, `mail`, `password`, `group_fsid`, `role_fsid`, 
+                    `joindate`, `current_session`) VALUES ( NULL, '".$username."', '".$email."', '".$hashedPassword."', 
+                    '".$group."', '".$role."',current_timestamp(), NULL);";
 
                     error_log($statement);
 
@@ -46,6 +48,33 @@ class UserController
             }
 
         }
+
+    }
+
+
+    public function getAllUsers():array
+    {
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
+
+        return $dbController->getAll("user");
+    }
+
+
+    public function updateUser($password,$role,$id)
+    {
+        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbController = new DbController($dbCredentials);
+
+        $userId = $id;
+        $userRole = $role;
+        $hashedPassword = password_hash($password,PASSWORD_DEFAULT);
+
+        $statement = "UPDATE `user` SET `password`='".$hashedPassword."', `role_fsid`=".$userRole." WHERE `id`=".$userId;
+
+        error_log($statement);
+
+        return $dbController->executeQuery($statement);
 
     }
 

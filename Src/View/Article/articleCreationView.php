@@ -51,39 +51,44 @@ $visibilityController = new VisibilityController();
                         }
 
                     ?>
+                        <select id="articleCategory" name="articleCategory">
+                            <?php
 
-                    <select id="articleCategory" name="articleCategory">
-                        <?php
+                            foreach ($categories as $category){
+                                echo "<option value='".$category["id"]."'>".$category["name"]."</option>";
+                            }
 
-                        foreach ($categories as $category){
-                            echo "<option value='".$category["id"]."'>".$category["name"]."</option>";
-                        }
+                            ?>
 
-                        ?>
-
-                    </select>
+                        </select>
                     </span>
 
                     <?php
 
                         echo"
-                        <br>
-                            </span>
                         <span class='col-sm-8'>
-                            <input type=text id='articleTitle' name='articleTitle' class='articleTitleEdit' placeholder='Title' value='".$loadedArticle[0][2]."' required>
+                            <input type=text id='articleTitle' name='articleTitle' class='articleTitleEdit' 
+                            placeholder='Title' value='".$loadedArticle[0][2]."' required>
                         </span>
                         
                         <span class='col-sm-2'></span>
-                        <br>
+                    </div>
+                    <div class='row'>
         
                         <input type='hidden' id='articleHiddenUpdate' name='articleHiddenUpdate'>
                         <input type='hidden' id='articleId' name='articleId' value='".$loadedArticle[0][0]."'>
         
                         <span class='col-sm-2'></span>
+                        
                         <span class='col-sm-8'>
-                            <textarea id='articleText' name='articleText' class='articleText'required>".$loadedArticle[0][3]."</textarea>
+                            <textarea id='articleText' name='articleText' class='articleText'required>
+                                ".$loadedArticle[0][3]."
+                            </textarea>
                         </span>
-                        <span class='col-sm-2'></span>";
+                        
+                        <span class='col-sm-2'></span>
+                        
+                    </div>";
 
 
 
@@ -92,13 +97,39 @@ $visibilityController = new VisibilityController();
                     ?>
 
                 <br>
+                    <span class="col-sm-2">
+                        <select id="articleCategory" name="articleCategory">
+                            <?php
 
-                <input type="text" id="articleTitle" name="articleTitle" class="articleTitle" placeholder="Title" required>
-                <br>
+                            foreach ($categories as $category){
+                                echo "<option value='".$category["id"]."'>".$category["name"]."</option>";
+                            }
+
+                            ?>
+                        </select>
+                    </span>
+
+                    <span class="col-sm-8">
+                        <input type="text" id="articleTitle" name="articleTitle" class="articleTitle" placeholder="Title" required>
+                    </span>
+
+                    <span class="col-sm-2"></span>
+
+                </div>
 
                 <input type="hidden" id="articleHidden" name="articleHidden" value="articleHidden" required>
 
-                <textarea id="articleText" name="articleText" class="articleText" required></textarea>
+                <div class="row">
+
+                    <span class="col-sm-1"></span>
+
+                    <span class="col-sm-10">
+                         <textarea id="articleText" name="articleText" class="articleText" required></textarea>
+                    </span>
+
+                    <span class="col-sm-1"></span>
+
+
 
                 <?php
                 }

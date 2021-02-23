@@ -12,11 +12,16 @@
  * @subpackage Templates
  * @copyright Copyright (c) 2021 Kevin Alexander Fronzeck
  * @license
- * @version 0.1
+ * @version 1.0
  * @link
  * @since 16.02.21
  *
  */
+
+
+include_once "Controller/UserController.php";
+$userController = new UserController();
+
 
 if(isset($_GET["site"])){
     if($_GET["site"] != "login"){
@@ -29,7 +34,11 @@ if(isset($_GET["site"])){
 
     if(isset($_SESSION["sessionID"]) != null){
 
-        include_once "aside.php";
+        if($userController->getRoleOfUser() != "4") {
+
+            include_once "aside.php";
+
+        }
 
     }
 }
@@ -53,32 +62,22 @@ if(isset($_GET["site"])){
             include_once("View/Article/articleCreationView.php");
         }else if($_GET["site"] == "userCreation"){
             include_once ("View/User/userCreation.php");
+        }else if($_GET["site"] == "userProfile"){
+            include_once ("View/User/userProfile.php");
         }else{
             header('location: http://localhost/wiki/?site=articleView');
         }
 
-    }else{
+    }else {
 
-        if($_GET["site"] == "login"){
+        if ($_GET["site"] == "login") {
             include_once("./View/Pages/login.php");
-        }else{
+        } else {
             header('location: http://localhost/wiki/?site=login');
         }
-//
-//
-//        header('location: http://localhost/wiki/?site=login');
     }
-
-//    include_once("./View/Article/articleView.php");
-//    include_once("./View/Article/articleCreationView.php");
-//
-//    include_once("./View/Pages/login.php");
-//
-//
-//    include_once("./View/User/userCreation.php");
 
     ?>
 
-    <p>Test</p>
 
 </main>

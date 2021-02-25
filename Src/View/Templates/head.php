@@ -45,6 +45,15 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
+
+    <!--Own FontAwesome Hosting-->
+    <link href="http://assets.thoughtspace.ch/css/all.css" rel="stylesheet">
+    <script defer src="http://assets.thoughtspace.ch/js/all.js"></script>
+
+
+    <!--Own JS-->
+    <script src="./Scripts/default.js"></script>
+
     <!--Own Style-->
     <link rel="stylesheet/less" type="text/css" href="./Style/default.less">
 

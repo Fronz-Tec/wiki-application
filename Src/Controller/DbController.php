@@ -48,7 +48,7 @@ class DbController
     }
 
 
-    public function getDbCredentials():DbCredentials
+    public function getDbCredentials()
     {
         return $this->dbCredentials;
     }
@@ -101,7 +101,6 @@ class DbController
             $this->isConnected = false;
         }
 
-        error_log($this->isConnected);
         return  $this->isConnected;
     }
 
@@ -122,7 +121,7 @@ class DbController
                 PRIMARY KEY (id)
             )";
 
-            $resultRoles = $this->executeQuery($sql);
+            $this->executeQuery($sql);
 
             //Checks if Roles is empty
             $statementRoles = "SELECT * FROM `roles` WHERE id > 0";
@@ -130,8 +129,9 @@ class DbController
 
             if ($resultRoles->num_rows < 1) {
 
-                $statement = "INSERT INTO `roles` (`id`, `name`) VALUES (NULL, 'admin'), (NULL, 'redaktor'), (NULL, 'user'),(NULL,'disabled');";
-                $result = $resultRoles = $this->executeQuery($statement);
+                $statement = "INSERT INTO `roles` (`id`, `name`) VALUES (NULL, 'admin'), 
+                                          (NULL, 'redaktor'), (NULL, 'user'),(NULL,'disabled');";
+                $this->executeQuery($statement);
 
 
             }
@@ -148,12 +148,12 @@ class DbController
 
             //Checks if Category is empty
             $statementCategory = "SELECT * FROM `category` WHERE id > 0";
-            $resultCategory = $resultRoles = $this->executeQuery($statementCategory);
+            $resultCategory = $this->executeQuery($statementCategory);
 
             if ($resultCategory->num_rows < 1) {
 
                 $statement = "INSERT INTO `category` (`id`, `name`) VALUES (NULL, 'news'), (NULL, 'general')";
-                $result = $resultRoles = $this->executeQuery($statement);
+                $this->executeQuery($statement);
 
             }
 
@@ -166,28 +166,27 @@ class DbController
                 PRIMARY KEY (id)
             )";
 
-            mysqli_query($connection, $sql);
+            $this->executeQuery($sql);
 
             //Checks if Visibility is empty
             $statementGroups = "SELECT * FROM `visibility` WHERE id > 0";
-            $resultGroups = $resultRoles = $this->executeQuery($statementGroups);
+            $resultVisibility = $this->executeQuery($statementGroups);
 
-            if ($resultGroups->num_rows < 1) {
+            if ($resultVisibility->num_rows < 1) {
 
-                $statement = "INSERT INTO `groups` (`id`, `name`) VALUES (NULL, 'internal'), (NULL, 'external'), (NULL, 'full')";
-                $result = $resultRoles = $this->executeQuery($statement);
-
-
+                $statement = "INSERT INTO `visibility` (`id`, `name`) VALUES (NULL, 'draft'), (NULL, 'open'), 
+                                               (NULL, 'internal'), (NULL, 'full'), (NULL, 'edited'), (NULL, 'external')";
+                $this->executeQuery($statement);
             }
 
             //create groups
-            $sql = "CREATE TABLE IF NOT EXISTS 'groups'(
+            $sql = "CREATE TABLE IF NOT EXISTS `groups`(
                 id INT(10) UNSIGNED AUTO_INCREMENT NOT NULL,
                 name VARCHAR(255) UNIQUE NOT NULL,
                 PRIMARY KEY (id)
             )";
 
-            $resultRoles = $this->executeQuery($sql);
+            $this->executeQuery($sql);
 
             //Checks if Groups is empty
             $statementGroups = "SELECT * FROM `groups` WHERE id > 0";
@@ -196,45 +195,63 @@ class DbController
             if ($resultGroups->num_rows < 1) {
 
                 $statement = "INSERT INTO `groups` (`id`, `name`) VALUES (NULL, 'internal'), (NULL, 'external')";
-                $result = $resultRoles = $this->executeQuery($statement);
+                $this->executeQuery($statement);
 
             }
 
 
             //create articles
-            $sql = "CREATE TABLE IF NOT EXISTS `article` (
-                  `id` int(11) NOT NULL,
-                  `date` timestamp NOT NULL DEFAULT current_timestamp(),
-                  `title` varchar(255) NOT NULL,
-                  `text` text NOT NULL,
-                  `author_fsid` int(11) NOT NULL,
-                  `visibility_fsid` int(11) NOT NULL,
-                  `category_fsid` int(11) NOT NULL,
-                  PRIMARY KEY (id),
-                  FOREIGN KEY (author_fsid) REFERENCES 'user' (id), 
-                  FOREIGN KEY (visibility_fsid) REFERENCES 'visibility' (id), 
-                  FOREIGN KEY (category_fsid) REFERENCES 'category' (id), 
-                )";
+            $sql = "CREATE TABLE `article` (
+                `id` int(11) UNSIGNED AUTO_INCREMENT NOT NULL,
+              `date` timestamp NOT NULL DEFAULT current_timestamp(),
+              `title` varchar(255) NOT NULL,
+              `text` text NOT NULL,
+              `author_fsid` int(11) NOT NULL,
+              `visibility_fsid` int(11) NOT NULL,
+              `category_fsid` int(11) NOT NULL,
+               PRIMARY KEY (`id`)
+              )";
 
-            $resultRoles = $this->executeQuery($sql);
+            $this->executeQuery($sql);
+
+            $sql = "ALTER TABLE `article`
+              ADD KEY `author_fsid` (`author_fsid`),
+              ADD KEY `visibility_fsid` (`visibility_fsid`),
+              ADD KEY `category_fsid` (`category_fsid`)";
+
+            $this->executeQuery($sql);
+
+            $sql = "ALTER TABLE `article`
+              ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`author_fsid`) REFERENCES `user` (`id`),
+              ADD CONSTRAINT `article_ibfk_2` FOREIGN KEY (`visibility_fsid`) REFERENCES `visibility` (`id`),
+              ADD CONSTRAINT `article_ibfk_3` FOREIGN KEY (`category_fsid`) REFERENCES `category` (`id`);";
+
+            $this->executeQuery($sql);
 
 
             //create links
             $sql = "CREATE TABLE IF NOT EXISTS `links` (
                   `article_fsid` int(11) NOT NULL,
                   `title` varchar(255) NOT NULL,
-                  PRIMARY KEY (art),
-                  FOREIGN KEY (art) REFERENCES 'user' (id),
-                  FOREIGN KEY (visibility_fsid) REFERENCES 'visibility' (id),
-                  FOREIGN KEY (category_fsid) REFERENCES 'category' (id),
+                   `url` archar(255) NOT NULL
                 )";
 
-            $resultRoles = $this->executeQuery($sql);
+            $this->executeQuery($sql);
+
+            $sql = "ALTER TABLE `links`
+            ADD KEY `article_fsid` (`article_fsid`)";
+
+            $this->executeQuery($sql);
+
+            $sql = "ALTER TABLE `links`
+            ADD CONSTRAINT `links_ibfk_1` FOREIGN KEY (`article_fsid`) REFERENCES `article` (`id`)";
+
+            $this->executeQuery($sql);
 
 
             //create user
             $sql = "CREATE TABLE IF NOT EXISTS `user` (
-                  `id` int(11) NOT NULL,
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
                   `username` varchar(255) NOT NULL,
                   `mail` varchar(255) NOT NULL,
                   `password` varchar(255) NOT NULL,
@@ -242,12 +259,22 @@ class DbController
                   `role_fsid` int(11) NOT NULL,
                   `joindate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
                   `current_session` varchar(255) NOT NULL,
-                   PRIMARY KEY (`id`),
-                   FOREIGN KEY (`group_fsid`) REFERENCES `groups` (`id`),
-                   FOREIGN KEY (`role_fsid`) REFERENCES `roles` (`id`)
+    			  PRIMARY KEY(`id`)
                 )";
 
-            $resultRoles = $this->executeQuery($sql);
+            $this->executeQuery($sql);
+
+            $sql = "ALTER TABLE `user`
+            ADD KEY `group_fsid` (`group_fsid`),
+            ADD KEY `role_fsid` (`role_fsid`)";
+
+            $this->executeQuery($sql);
+
+            $sql = "ALTER TABLE `user`
+            ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`group_fsid`) REFERENCES `groups` (`id`),
+             ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`role_fsid`) REFERENCES `roles` (`id`)";
+
+            $this->executeQuery($sql);
 
 
             $statementUser = "SELECT * FROM `user` WHERE id > 0";
@@ -258,9 +285,9 @@ class DbController
                 $adminPassword = "%%21b81D";
                 $hashedAdminPassword = password_hash($adminPassword, PASSWORD_DEFAULT);
 
-                $statement = "INSERT INTO `user` (`id`, `name`,`password`,`roles`) VALUES (NULL, 'admin',".$hashedAdminPassword.")";
-                $result = $resultRoles = $this->executeQuery($statement);
-
+                $statement = "INSERT INTO `user` (`id`, `username`,`mail`,`password`,`group_fsid`,`role_fsid`) 
+                VALUES (NULL, 'admin','admin@admin.com','".$hashedAdminPassword."',1,1)";
+                $this->executeQuery($statement);
             }
         }
 
@@ -334,8 +361,6 @@ class DbController
         $statement = "SELECT * FROM `".$table."` WHERE `".$condition1."`=".$conditionCheck1." 
         OR `".$condition2."`=".$conditionCheck2;
 
-        error_log($statement);
-
         $result = array();
 
         $tempResult = $this->executeQuery($statement);
@@ -346,22 +371,22 @@ class DbController
 
         }
 
-
         return $result;
 
     }
 
 
 
-    public function doesExist($table, $tableRow, $toCheck):bool{
+    public function doesExist($table, $tableRow, $toCheck):bool
+    {
 
         //ToDO: Change to prevent SQL Injections
 
         $statement = "SELECT * FROM ".$table." WHERE ".$tableRow." = '".$toCheck."'";
 
+        error_log($statement);
 
         $tempResult = $this->executeQuery($statement);
-
 
         if ($tempResult->num_rows > 0){
             $doesExist = true;

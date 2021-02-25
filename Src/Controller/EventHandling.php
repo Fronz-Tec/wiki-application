@@ -11,7 +11,7 @@
  * @subpackage Controller
  * @copyright Copyright (c) 2021 Kevin Alexander Fronzeck
  * @license
- * @version 0.2
+ * @version 1.0
  * @link
  * @since 17.02.21
  *
@@ -92,8 +92,6 @@ if(isset($_POST["newUserHidden"])){
     $userController->createNewUser($username,$email,$password,$role,$group);
 
     header('location: http://localhost/wiki/?site=articleView');
-
-    error_log("New User Save Event called");
 }
 
 if(isset($_POST["userEdit"])){
@@ -103,13 +101,23 @@ if(isset($_POST["userEdit"])){
 if(isset($_POST["editProfile"])){
 
     $password = $_POST["changePassword"];
-    $role = $_POST["role"];
-    $id = $_POST["userId"];
+
+    if(isset($_POST["role"])){
+        $role = $_POST["role"];
+    }else{
+        $role = $userController->getRoleOfUser();
+    }
+
+    if(isset($_POST["userId"])){
+        $id = $_POST["userId"];
+    }else{
+        $id = $userController->getUserId();
+    }
 
     $userController->updateUser($password,$role,$id);
 
 
-    header('location: http://localhost/wiki/?site=articleView');
+    header('location: http://localhost/wiki/?site=userProfile');
 
 }
 
@@ -129,8 +137,6 @@ if(isset($_POST["linkHidden"])){
 if(isset($_POST["filter"])){
 
     $filterWord = $_POST["categoryFilter"];
-
-    error_log($filterWord);
 
     header('location: http://localhost/wiki/?site=articleView&category='.$filterWord);
 }
@@ -158,7 +164,10 @@ if(isset($_POST["userCreation"])){
 
 
 if(isset($_POST["articleId"])){
-
     $articleId = $_POST["articleId"];
     header('location: http://localhost/wiki/?site=articleCreation&articleId='.$articleId);
+}
+
+if(isset($_POST["articleView"])){
+    header('location: http://localhost/wiki/?site=articleView');
 }

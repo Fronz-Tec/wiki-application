@@ -1,5 +1,20 @@
 <?php
-
+/*
+ * A Controller handling user functions
+ *
+ *
+ * LICENSE:
+ *
+ * @category File
+ * @package Src
+ * @subpackage Controller
+ * @copyright Copyright (c) 2021 Kevin Alexander Fronzeck
+ * @license
+ * @version 1.0
+ * @link
+ * @since 17.02.21
+ *
+ */
 
 include_once "DbController.php";
 include_once "Model/DbCredentials.php";
@@ -16,33 +31,31 @@ class UserController
 
         if($this->usernameExists($username) == true){
 
+            error_log("password exists");
             //ToDo: Output Message
         }else{
-
-            error_log("username not exists");
 
             if($this->verifyMail($email) == true){
 
                 if ($this->emailExists($email) == true){
-                    //ToDo: Output Message
+                    error_log("mail exists");
                 }else{
+                    $dbCredentials = new DbCredentials();
+                    $dbController = new DbController($dbCredentials);
 
-                    error_log("mail not exists");
-
-                    //ToDo: Prevent SQL Injection
                     $statement = "INSERT INTO `user` (`id`, `username`, `mail`, `password`, `group_fsid`, `role_fsid`, 
-                    `joindate`, `current_session`) VALUES ( NULL, '".$username."', '".$email."', '".$hashedPassword."', 
+                    `joindate`, `current_session`) VALUES ( NULL, '".htmlspecialchars($username, ENT_QUOTES)."', 
+                    '".htmlspecialchars($email, ENT_QUOTES)."', '".$hashedPassword."', 
                     '".$group."', '".$role."',current_timestamp(), NULL);";
 
                     error_log($statement);
 
-                    $dbCredentials = new \DbCredentials\DbCredentials();
-                    $dbController = new DbController($dbCredentials);
+                    $result = $dbController->executeQuery($statement);
 
-                    return $dbController->executeQuery($statement);
+                    return $result;
                 }
             }else{
-                //Todo Output Message
+                error_log("Mail not verified");
 
                 return null;
             }
@@ -54,7 +67,7 @@ class UserController
 
     public function getAllUsers():array
     {
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         return $dbController->getAll("user");
@@ -63,7 +76,7 @@ class UserController
 
     public function updateUser($password,$role,$id)
     {
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         $userId = $id;
@@ -72,7 +85,10 @@ class UserController
 
         $statement = "UPDATE `user` SET `password`='".$hashedPassword."', `role_fsid`=".$userRole." WHERE `id`=".$userId;
 
-        error_log($statement);
+        if($role == 4){
+            $statement = "UPDATE `user` SET `password`='".$hashedPassword."', `role_fsid`=".$userRole.", 
+            `current_session`=NULL WHERE `id`=".$userId;
+        }
 
         return $dbController->executeQuery($statement);
 
@@ -90,7 +106,7 @@ class UserController
 
     public function usernameExists($username):bool
     {
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         return  $dbController->doesExist("user","username",$username);
@@ -99,7 +115,7 @@ class UserController
 
     public function emailExists($email):bool
     {
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         return  $dbController->doesExist("user","mail",$email);
@@ -168,7 +184,7 @@ class UserController
     {
         $sessionController = new SessionController();
 
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         $userRole = null;
@@ -192,7 +208,7 @@ class UserController
     {
         $sessionController = new SessionController();
 
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         $userGroup = null;
@@ -214,7 +230,7 @@ class UserController
     {
         $sessionController = new SessionController();
 
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         $userId = null;
@@ -227,8 +243,6 @@ class UserController
 
             $userId = $user[0][0];
         }
-
-        error_log("userId: ".$userId);
 
         return $userId;
     }

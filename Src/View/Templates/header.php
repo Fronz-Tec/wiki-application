@@ -31,7 +31,8 @@
 
     <div class="headerBox">
 
-        <img src="" alt="Obvita Logo" class="logoImage">
+        <img src="./Media/obvita-ostschweizerischer-blindenfuersorgeverein_logo_big_de.jpg" alt="Obvita Logo"
+             class="logoImage">
     </div>
 
 

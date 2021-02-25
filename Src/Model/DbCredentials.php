@@ -15,7 +15,7 @@
  *
  */
 
-namespace DbCredentials;
+//namespace DbCredentials;
 
 
 class DbCredentials

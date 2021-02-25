@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * A Controller handling article functions
+ *
+ *
+ * LICENSE:
+ *
+ * @category File
+ * @package Src
+ * @subpackage Controller
+ * @copyright Copyright (c) 2021 Kevin Alexander Fronzeck
+ * @license
+ * @version 1.0
+ * @link
+ * @since 17.02.21
+ *
+ */
 
 include_once "DbController.php";
 include_once "Model/DbCredentials.php";
@@ -16,7 +32,7 @@ class ArticleController
     public function getAllArticles(): array
     {
 
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         return $dbController->getAll("article");
@@ -25,7 +41,7 @@ class ArticleController
 
     public function getArticleById($id): array{
 
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         return $dbController->getAllBy("article","id",$id);
@@ -35,7 +51,7 @@ class ArticleController
 
     public function getAllArticlesByVisibility($visibility):array
     {
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         return $dbController->getAllBy("article","visibility_fsid",$visibility);
@@ -44,7 +60,7 @@ class ArticleController
 
     public function getAllArticlesByAuthor($author):array
     {
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         return $dbController->getAllBy("article","author_fsid",$author);
@@ -54,7 +70,7 @@ class ArticleController
 
     public function getAllByOwn():array
     {
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         $username = $_SESSION["username"];
@@ -71,7 +87,7 @@ class ArticleController
 
     public function getAllArticlesByCategory($category):array
     {
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
 
@@ -84,7 +100,7 @@ class ArticleController
 
     public function getAllPermissionedArticle($condition1,$conditionCheck1,$condition2,$conditionCheck2,$category):array
     {
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         $result= array();
@@ -93,8 +109,6 @@ class ArticleController
 
             $statement = "SELECT * FROM `article` WHERE `".$condition1."`=".$conditionCheck1." 
             AND `category_fsid`=".$category." OR `".$condition2."`=".$conditionCheck2." AND `category_fsid`=".$category;
-
-            error_log($statement);
 
             $tempResult = $dbController->executeQuery($statement);
 
@@ -139,7 +153,7 @@ class ArticleController
     {
         $statement = "SELECT ".$articlePropertyName." FROM article WHERE id = '".$articleId."'";
 
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
 
         $dbController = new DbController($dbCredentials);
 
@@ -155,13 +169,15 @@ class ArticleController
 
     }
 
-    //ToDo: Make Article Creation
-    public function saveArticleInDb($title,$text, $category,$visibility){
+    public function saveArticleInDb($title,$text, $category,$visibility)
+    {
 
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
-        session_start();
+        if(!isset($_SESSION)){
+            session_start();
+        }
 
         $username = $_SESSION["username"];
 
@@ -173,9 +189,8 @@ class ArticleController
         //ToDo: Prevent SQL Injection
 
         $statement = "INSERT INTO `article` (`title`, `text`, `author_fsid`, `visibility_fsid`, `category_fsid`) 
-        VALUES ('".htmlspecialchars($title, ENT_SUBSTITUTE)."', '".htmlspecialchars($text, ENT_SUBSTITUTE)."', 
+        VALUES ('".htmlspecialchars($title, ENT_QUOTES)."', '".htmlspecialchars($text, ENT_QUOTES)."', 
         '".$authorId."', '".$visibility."', '".$category."'); ";
-
 
         error_log($statement);
 
@@ -187,13 +202,13 @@ class ArticleController
 
     public function updateArticleInDb($id,$title,$text, $category, $visibility)
     {
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
-        $statement = "UPDATE `article` SET `title`='".htmlspecialchars($title)."',`text`='".htmlspecialchars($text)."', `visibility_fsid`='".$visibility."', 
+        $statement = "UPDATE `article` SET `title`='".htmlspecialchars($title, ENT_QUOTES)."',
+        `text`='".htmlspecialchars($text, ENT_QUOTES)."', 
+        `visibility_fsid`='".$visibility."', 
         `category_fsid`='".$category."' WHERE `id`='".$id."'";
-
-        error_log($statement);
 
         return $dbController->executeQuery($statement);
     }
@@ -202,7 +217,7 @@ class ArticleController
 
     public function hasPermissionToEdit($articleId):bool
     {
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
         $sessionController = new SessionController();
 

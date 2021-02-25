@@ -54,7 +54,7 @@ if(isset($_GET["site"])){
     <?php
 
 
-    if(isset($_SESSION["sessionID"]) != null){
+    if(isset($_SESSION["sessionID"]) != null && isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == true){
 
         if($_GET["site"] == "articleView"){
             include_once("View/Article/articleView.php");

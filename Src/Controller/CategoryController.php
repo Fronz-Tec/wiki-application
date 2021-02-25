@@ -1,5 +1,22 @@
 <?php
 
+/*
+ * A Controller handling category functions
+ *
+ *
+ * LICENSE:
+ *
+ * @category File
+ * @package Src
+ * @subpackage Controller
+ * @copyright Copyright (c) 2021 Kevin Alexander Fronzeck
+ * @license
+ * @version 1.0
+ * @link
+ * @since 17.02.21
+ *
+ */
+
 include_once "DbController.php";
 include_once "Model/DbCredentials.php";
 
@@ -9,7 +26,7 @@ class CategoryController
     {
         $statement = "SELECT * FROM category";
 
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
 
         $dbController = new DbController($dbCredentials);
 

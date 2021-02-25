@@ -43,7 +43,7 @@ Variables
 
 
 //font-sizes
-@huge: 72px;
+@huge: 42px;
 @smallHeader: 24px;
 
 //Fonts
@@ -58,6 +58,16 @@ Variables
 *General
 */
 
+
+a{
+  color: @green;
+  margin: 5px;
+
+  &:hover{
+    color: @even-darker-grey;
+  }
+}
+
 footer{
   clear: both;
   float: none;
@@ -69,20 +79,6 @@ footer{
   margin: 0 auto;
   .siteElement();
 }
-
-header {
-  padding-bottom: 40px;
-
-  .headerBox{
-    min-height: 50px;
-    max-height: 50px;
-    position: fixed;
-    width: @full;
-    z-index: 100;
-    .siteElement()
-  }
-}
-
 
 main{
   margin-top: 30px;
@@ -167,24 +163,49 @@ Article
 
 }
 
+.articleTitle{
+  font-size: @huge;
+}
 
 //TTitle for editing articles in articleCreation
 .articleTitleEdit{
   color: @green;
-  width: 100%;
+  width: @full;
+  .articleTitle();
 }
-
-
-
-
 
 .articleContainer{
   word-wrap: break-word;
 }
 
-
 .editButton{
+  margin-bottom: 10px;
+  background-color: @lighter-grey;
+  color: @green;
+}
 
+/*
+* Header
+*/
+
+
+header {
+  padding-bottom: 40px;
+
+  .headerBox{
+    min-height: 50px;
+    max-height: 50px;
+    position: fixed;
+    width: @full;
+    z-index: 100;
+    .siteElement()
+  }
+}
+
+
+.logoImage{
+  height: 50px;
+  width: 50px;
 }
 
 
@@ -378,8 +399,24 @@ Sidebar
 }
 
 
+/*
+User Creation/editing
+ */
 
+.userCreationContainer{
+  width: 90%;
+  margin-bottom: 5px;
 
+  input{
+    width: @full;
+    .bordered();
+  }
+
+  select{
+    width: @full;
+    .bordered();
+  }
+}
 
 
 

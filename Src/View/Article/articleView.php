@@ -1,5 +1,20 @@
 <?php
-
+/*
+ * A Controller handling link functions
+ *
+ *
+ * LICENSE:
+ *
+ * @category View
+ * @package Src
+ * @subpackage View
+ * @copyright Copyright (c) 2021 Kevin Alexander Fronzeck
+ * @license
+ * @version 1.0
+ * @link
+ * @since 17.02.21
+ *
+ */
 ?>
 
 

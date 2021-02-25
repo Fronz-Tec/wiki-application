@@ -115,26 +115,45 @@
         }
 
 
-        if ($userController->isAdmin()){
+        echo "
+        <p class='menuTitle'>User</p>
+         <div class='menuWrapper'>";
 
-            echo "<p class='menuTitle'>User</p>
-                <div class='menuWrapper'>
-                    <form method='post' action='Controller/EventHandling.php'>
-                        <input type='hidden' name='userCreation'>
-                        <button class='menuButtonUp' type='submit'>Create User</button>
-                    </form>
-                ";
-        }
-        echo "<form method='post' action='Controller/EventHandling.php'>
+
+        if ($userController->isAdmin()){
+            echo "
+            <form method='post' action='Controller/EventHandling.php'>
+                 <input type='hidden' name='userCreation'>
+                 <button class='menuButtonUp' type='submit'>Create User</button>
+            </form>";
+
+
+        echo "
+            <form method='post' action='Controller/EventHandling.php'>
                    <input type='hidden' name='userEdit'>
                    <button class='menuButtonDown' type='submit'>Edit Profile</button>
-               </form>
-               </div>
-               <hr class='menuDivider'>";
+               </form>";
+        }else{
+            echo "
+            <form method='post' action='Controller/EventHandling.php'>
+                   <input type='hidden' name='userEdit'>
+                   <button class='menuButtonUp' type='submit'>Edit Profile</button>
+               </form>";
+        }
+        echo"
+        </div>
+        
+        <hr class='menuDivider'>";
 
 
     ?>
     <div class='menuWrapper'>
+
+        <form method="post" action="Controller/EventHandling.php">
+            <input type="hidden" name="articleView" id="articleView">
+            <button type="submit" class='menuButtonUp'>To Main Page</button>
+        </form>
+
         <form method="post" action="Controller/EventHandling.php">
             <input type="hidden" name="logout" id="logout">
             <button type="submit" class='menuButtonDown'>Logout</button>

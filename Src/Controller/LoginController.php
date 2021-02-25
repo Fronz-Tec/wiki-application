@@ -1,5 +1,22 @@
 <?php
 
+/*
+ * A Controller handling login functions
+ *
+ *
+ * LICENSE:
+ *
+ * @category File
+ * @package Src
+ * @subpackage Controller
+ * @copyright Copyright (c) 2021 Kevin Alexander Fronzeck
+ * @license
+ * @version 1.0
+ * @link
+ * @since 16.02.21
+ *
+ */
+
 include_once "DbController.php";
 include_once "Model/DbCredentials.php";
 include_once "UserController.php";
@@ -7,11 +24,10 @@ include_once "SessionController.php";
 
 class LoginController
 {
+    public function login($inputUsername, $inputPassword)
+    {
 
-
-    public function login($inputUsername, $inputPassword){
-
-        $dbCredentials = new \DbCredentials\DbCredentials();
+        $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
         $userController = new UserController();
         $sessionController = new SessionController();
@@ -19,13 +35,19 @@ class LoginController
         //Checks if inputed username even exists in the DB
         if($userController->usernameExists($inputUsername)){
 
+            error_log("User accessed");
+
             $statement = "SELECT password FROM user WHERE  username = '" . $inputUsername . "'";
+
+            error_log($statement);
 
             $result = $dbController->executeQuery($statement);
 
             $value = mysqli_fetch_array($result)["password"];
 
-            if (password_verify($inputUsername, $value)) {
+            error_log($value);
+
+            if (password_verify($inputPassword, $value)) {
 
                 //Creates a unique Session ID
                 $sessionController->createSession($inputUsername);
@@ -48,7 +70,7 @@ class LoginController
 
 //    public function isPasswordCorrect($username, $password):bool{
 //
-//        $dbCredentials = new \DbCredentials\DbCredentials();
+//        $dbCredentials = new DbCredentials();
 //        $dbController = new DbController($dbCredentials);
 //        $userController = new UserController();
 //

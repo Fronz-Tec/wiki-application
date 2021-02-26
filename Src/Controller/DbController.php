@@ -233,8 +233,7 @@ class DbController
             $sql = "CREATE TABLE IF NOT EXISTS `links` (
                   `article_fsid` int(11) NOT NULL,
                   `title` varchar(255) NOT NULL,
-                   `url` archar(255) NOT NULL
-                )";
+                   `url` text NOT NULL)";
 
             $this->executeQuery($sql);
 
@@ -258,7 +257,7 @@ class DbController
                   `group_fsid` int(11) NOT NULL,
                   `role_fsid` int(11) NOT NULL,
                   `joindate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-                  `current_session` varchar(255) NOT NULL,
+                  `current_session` varchar(255),
     			  PRIMARY KEY(`id`)
                 )";
 

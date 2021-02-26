@@ -118,13 +118,10 @@ class TestDBAccess extends TestCase
             "User Table not empty"
         );
 
-        $newUser = $userController->createNewUser("testUserName","test@test.test","testPassword",
+        $userController->createNewUser("testUserName","test@test.test","testPassword",
             "1","1");
 
-        mysqli_query($connection,$newUser);
-
-        $sqlQueryCheckNewUser = "SELECT * FROM `user` WHERE `username`='testuserName' 
-                       AND `email`='test@test.test'";
+        $sqlQueryCheckNewUser = "SELECT * FROM `user` WHERE `username`='testuserName' ";
 
         $this->assertTrue(
             mysqli_num_rows(mysqli_query($connection, $sqlQueryCheckNewUser)) == 1,
@@ -184,7 +181,7 @@ class TestDBAccess extends TestCase
         $sqlQueryCheckUserAdmin = "SELECT * FROM `user`";
 
         $this->assertTrue(
-            mysqli_num_rows(mysqli_query($connection, $sqlQueryCheckUserAdmin)) == 1,
+            mysqli_num_rows(mysqli_query($connection, $sqlQueryCheckUserAdmin)) >= 1,
             "users are empty"
         );
 
@@ -248,12 +245,11 @@ class TestDBAccess extends TestCase
 
     public function testCreateLink()
     {
-        $sqlQueryClearArticle = "DELETE FROM `article`";
-
         $dbController = new DbController($this->getTestDbCredentials());
         $linkController = new LinkController();
         $connection = $dbController->getDbConnection();
 
+        $sqlQueryClearArticle = "DELETE FROM `article`";
         mysqli_query($connection,$sqlQueryClearArticle);
 
         $sqlQueryCheckArticle = "SELECT * FROM `article`";
@@ -264,7 +260,6 @@ class TestDBAccess extends TestCase
         );
 
         $sqlQueryDeleteLinks = "DELETE FROM `links`";
-
         mysqli_query($connection,$sqlQueryDeleteLinks);
 
         $sqlQueryCheckLink = "SELECT * FROM `links`";

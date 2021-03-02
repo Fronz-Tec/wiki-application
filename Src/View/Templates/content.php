@@ -18,17 +18,14 @@
  *
  */
 
-
 include_once "Controller/UserController.php";
 $userController = new UserController();
-
 
 if(isset($_GET["site"])){
     if($_GET["site"] != "login"){
 
-
-
 ?>
+
 <aside>
     <?php
 
@@ -37,22 +34,23 @@ if(isset($_GET["site"])){
         if($userController->getRoleOfUser() != "4") {
 
             include_once "aside.php";
-
         }
-
     }
 }
 
     ?>
+
 </aside>
 
 <?php
+
 }
+
 ?>
 
 <main>
-    <?php
 
+    <?php
 
     if(isset($_SESSION["sessionID"]) != null && isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == true){
 
@@ -78,6 +76,5 @@ if(isset($_GET["site"])){
     }
 
     ?>
-
 
 </main>

@@ -23,7 +23,7 @@ include_once "Model/DbCredentials.php";
 class GroupController
 {
 
-    public function getAllGroups():array
+    public function getAllGroups(): array
     {
         $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);

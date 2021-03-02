@@ -21,5 +21,9 @@
 ?>
 
 <footer>
-    <p class="copyrightText">(C) 2020</p>
+
+    <p class="copyrightText">
+        obvita Informatik, support@obvita.ch, Tel. intern 859
+    </p>
+
 </footer>

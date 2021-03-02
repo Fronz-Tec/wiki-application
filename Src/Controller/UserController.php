@@ -24,48 +24,46 @@ include_once "SessionController.php";
 class UserController
 {
 
-    public function createNewUser($username,$email,$password,$role,$group)
+    public function createNewUser($username, $email, $password, $role, $group)
     {
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        if($this->usernameExists($username) == true){
+        if ($this->usernameExists($username) == true) {
 
             error_log("password exists");
-            //ToDo: Output Message
-        }else{
+        } else {
 
-            if($this->verifyMail($email) == true){
+            if ($this->verifyMail($email) == true) {
 
-                if ($this->emailExists($email) == true){
+                if ($this->emailExists($email) == true) {
+
                     error_log("mail exists");
-                }else{
+
+                } else {
                     $dbCredentials = new DbCredentials();
                     $dbController = new DbController($dbCredentials);
 
                     $statement = "INSERT INTO `user` (`id`, `username`, `mail`, `password`, `group_fsid`, `role_fsid`, 
-                    `joindate`, `current_session`) VALUES ( NULL, '".htmlspecialchars($username, ENT_QUOTES)."', 
-                    '".htmlspecialchars($email, ENT_QUOTES)."', '".$hashedPassword."', 
-                    '".$group."', '".$role."',current_timestamp(), NULL);";
+                    `joindate`, `current_session`) 
+                    VALUES ( NULL, '" . htmlspecialchars($username, ENT_QUOTES) . "',
+                    '" . htmlspecialchars($email, ENT_QUOTES) . "', '" . $hashedPassword . "', '" . $group . "',
+                    '" . $role . "',current_timestamp(), NULL);";
 
                     error_log($statement);
 
-                    $result = $dbController->executeQuery($statement);
-
-                    return $result;
+                    return $dbController->executeQuery($statement);
                 }
-            }else{
+            } else {
                 error_log("Mail not verified");
 
                 return null;
             }
-
         }
-
     }
 
 
-    public function getAllUsers():array
+    public function getAllUsers(): array
     {
         $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
@@ -74,57 +72,57 @@ class UserController
     }
 
 
-    public function updateUser($password,$role,$id)
+    public function updateUser($password, $role, $id)
     {
         $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         $userId = $id;
         $userRole = $role;
-        $hashedPassword = password_hash($password,PASSWORD_DEFAULT);
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        $statement = "UPDATE `user` SET `password`='".$hashedPassword."', `role_fsid`=".$userRole." WHERE `id`=".$userId;
+        $statement = "UPDATE `user` SET `password`='" . $hashedPassword . "', `role_fsid`=" . $userRole . " 
+        WHERE `id`=" . $userId;
 
-        if($role == 4){
-            $statement = "UPDATE `user` SET `password`='".$hashedPassword."', `role_fsid`=".$userRole.", 
-            `current_session`=NULL WHERE `id`=".$userId;
+        if ($role == 4) {
+
+            $statement = "UPDATE `user` SET `password`='" . $hashedPassword . "', `role_fsid`=" . $userRole . ", 
+            `current_session`=NULL WHERE `id`=" . $userId;
         }
 
         return $dbController->executeQuery($statement);
-
     }
 
 
-    public function verifyMail($email):bool
+    public function verifyMail($email): bool
     {
-        if(filter_var($email,FILTER_VALIDATE_EMAIL)){
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return true;
         }
+
         return false;
     }
 
 
-    public function usernameExists($username):bool
+    public function usernameExists($username): bool
     {
         $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
-        return  $dbController->doesExist("user","username",$username);
-
+        return $dbController->doesExist("user", "username", $username);
     }
 
-    public function emailExists($email):bool
+    public function emailExists($email): bool
     {
         $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
-        return  $dbController->doesExist("user","mail",$email);
-
+        return $dbController->doesExist("user", "mail", $email);
     }
 
 
-
-    public function hashPassword($password){
+    public function hashPassword($password)
+    {
 
         //ToDo: Prevent SQL Injections before hashing just to be sure
 
@@ -132,46 +130,44 @@ class UserController
         $hashedPassword = password_hash($passwordToHash, PASSWORD_DEFAULT);
 
         //Check if password was really hashed
-        if($hashedPassword != $password){
+        if ($hashedPassword != $password) {
             return $hashedPassword;
         }
 
         return null;
-
     }
 
 
-    public function isAdmin():bool
+    public function isAdmin(): bool
     {
         $sessionController = new SessionController();
 
         $isAdmin = false;
 
-        if($sessionController->verifySession()){
+        if ($sessionController->verifySession()) {
 
-            if($this->getRoleOfUser() == "1"){
+            if ($this->getRoleOfUser() == "1") {
 
                 $isAdmin = true;
 
-            }else{
+            } else {
 
                 $isAdmin = false;
             }
         }
 
         return $isAdmin;
-
     }
 
 
-    public function isCurator():bool
+    public function isCurator(): bool
     {
         $sessionController = new SessionController();
 
         $isCurator = false;
 
-        if($sessionController->verifySession()){
-            if($this->getRoleOfUser() == "2") {
+        if ($sessionController->verifySession()) {
+            if ($this->getRoleOfUser() == "2") {
                 $isCurator = true;
             }
         }
@@ -189,11 +185,11 @@ class UserController
 
         $userRole = null;
 
-        if($sessionController->verifySession()){
+        if ($sessionController->verifySession()) {
 
             $username = $_SESSION["username"];
 
-            $user = $dbController->getAllBy("user","username",$username);
+            $user = $dbController->getAllBy("user", "username", $username);
 
             $userRole = $user[0][5];
 
@@ -213,20 +209,19 @@ class UserController
 
         $userGroup = null;
 
-        if($sessionController->verifySession()){
+        if ($sessionController->verifySession()) {
 
             $username = $_SESSION["username"];
 
-            $user = $dbController->getAllBy("user","username",$username);
+            $user = $dbController->getAllBy("user", "username", $username);
 
             $userGroup = $user[0][4];
         }
 
         return $userGroup;
-
     }
 
-    public function getUserId():int
+    public function getUserId(): int
     {
         $sessionController = new SessionController();
 
@@ -235,20 +230,16 @@ class UserController
 
         $userId = null;
 
-        if($sessionController->verifySession()){
+        if ($sessionController->verifySession()) {
 
             $username = $_SESSION["username"];
 
-            $user = $dbController->getAllBy("user","username",$username);
+            $user = $dbController->getAllBy("user", "username", $username);
 
             $userId = $user[0][0];
         }
 
         return $userId;
     }
-
-
-
-
 
 }

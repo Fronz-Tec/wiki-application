@@ -45,7 +45,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-
     <!--Own FontAwesome Hosting-->
     <link href="http://assets.thoughtspace.ch/css/all.css" rel="stylesheet">
     <script defer src="http://assets.thoughtspace.ch/js/all.js"></script>
@@ -59,6 +58,5 @@
 
     <!--Less Import-->
     <script src="//cdn.jsdelivr.net/npm/less" ></script>
-
 </head>
 

@@ -25,20 +25,19 @@ class RoleController
 
     public function getAllRoles(): array
     {
-
         $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         return $dbController->getAll("roles");
-
     }
 
-    public function getRoleName($roleId):String
+
+    public function getRoleName($roleId): string
     {
         $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
-        $statement = "SELECT `name` FROM `roles` WHERE `id`=".$roleId;
+        $statement = "SELECT `name` FROM `roles` WHERE `id`=" . $roleId;
 
         return mysqli_fetch_assoc($dbController->executeQuery($statement))["name"];
     }

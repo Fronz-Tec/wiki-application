@@ -25,12 +25,10 @@ class VisibilityController
 
     public function getAlVisibilities(): array
     {
-
         $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
         return $dbController->getAll("visibility");
-
     }
 
 
@@ -43,6 +41,5 @@ class VisibilityController
 
         return $dbController->executeQuery($statement);
     }
-
 
 }

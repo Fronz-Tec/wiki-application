@@ -22,6 +22,7 @@ include_once "Model/DbCredentials.php";
 
 class CategoryController
 {
+
     public function getAllCategories(): array
     {
         $statement = "SELECT * FROM category";
@@ -41,6 +42,5 @@ class CategoryController
         }
 
         return $result;
-
     }
 }

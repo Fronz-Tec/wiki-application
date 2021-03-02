@@ -22,8 +22,8 @@ include_once "SessionController.php";
 class LogoutController
 {
 
-    public function logout(){
-
+    public function logout()
+    {
         $sessionController = new SessionController();
         $sessionController->deleteSessionId();
 

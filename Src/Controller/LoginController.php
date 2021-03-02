@@ -24,16 +24,16 @@ include_once "SessionController.php";
 
 class LoginController
 {
+
     public function login($inputUsername, $inputPassword)
     {
-
         $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
         $userController = new UserController();
         $sessionController = new SessionController();
 
         //Checks if inputed username even exists in the DB
-        if($userController->usernameExists($inputUsername)){
+        if ($userController->usernameExists($inputUsername)) {
 
             error_log("User accessed");
 
@@ -53,18 +53,14 @@ class LoginController
                 $sessionController->createSession($inputUsername);
 
                 header('location: http://localhost/wiki/?site=articleView');
-            }else{
+            } else {
                 error_log("Password wrong");
             }
 
-        }else{
+        } else {
             header('location: http://localhost/wiki/?site=login%20message=failed');
         }
-
-
     }
-
-
 
     //Maybe make own function for it
 

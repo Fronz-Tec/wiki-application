@@ -90,7 +90,6 @@ class DbController
     }
 
 
-
     public function isConnected():bool
     {
         global $connection;
@@ -105,13 +104,8 @@ class DbController
     }
 
 
-
     public function createDbTables()
     {
-
-        global $connection;
-
-
         if($this->isConnected() == true) {
 
             //create roles
@@ -133,7 +127,6 @@ class DbController
                                           (NULL, 'redaktor'), (NULL, 'user'),(NULL,'disabled');";
                 $this->executeQuery($statement);
 
-
             }
 
 
@@ -143,6 +136,7 @@ class DbController
                 name VARCHAR(255) UNIQUE NOT NULL,
                 PRIMARY KEY (id)
             )";
+
 
             $resultRoles = $this->executeQuery($sql);
 
@@ -156,7 +150,6 @@ class DbController
                 $this->executeQuery($statement);
 
             }
-
 
 
             //create visibility
@@ -178,6 +171,7 @@ class DbController
                                                (NULL, 'internal'), (NULL, 'full'), (NULL, 'edited'), (NULL, 'external')";
                 $this->executeQuery($statement);
             }
+
 
             //create groups
             $sql = "CREATE TABLE IF NOT EXISTS `groups`(
@@ -239,14 +233,11 @@ class DbController
 
             $sql = "ALTER TABLE `links`
             ADD KEY `article_fsid` (`article_fsid`)";
-
             $this->executeQuery($sql);
 
             $sql = "ALTER TABLE `links`
             ADD CONSTRAINT `links_ibfk_1` FOREIGN KEY (`article_fsid`) REFERENCES `article` (`id`)";
-
             $this->executeQuery($sql);
-
 
             //create user
             $sql = "CREATE TABLE IF NOT EXISTS `user` (
@@ -260,21 +251,17 @@ class DbController
                   `current_session` varchar(255),
     			  PRIMARY KEY(`id`)
                 )";
-
             $this->executeQuery($sql);
 
             $sql = "ALTER TABLE `user`
             ADD KEY `group_fsid` (`group_fsid`),
             ADD KEY `role_fsid` (`role_fsid`)";
-
             $this->executeQuery($sql);
 
             $sql = "ALTER TABLE `user`
             ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`group_fsid`) REFERENCES `groups` (`id`),
              ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`role_fsid`) REFERENCES `roles` (`id`)";
-
             $this->executeQuery($sql);
-
 
             $statementUser = "SELECT * FROM `user` WHERE id > 0";
             $resultUser = $resultRoles = $this->executeQuery($statementUser);
@@ -295,15 +282,12 @@ class DbController
 
     public function executeQuery($statement)
     {
-
         return mysqli_query($this->getDbConnection(), $statement);
-
     }
 
 
     public function getAll($table):array
     {
-
         $statement = "SELECT * FROM ".$table." ";
 
         $result = array();
@@ -328,9 +312,7 @@ class DbController
         $tempResult = $this->executeQuery($statement);
 
         while ($entry = mysqli_fetch_array($tempResult)) {
-
             array_push($result, $entry);
-
         }
 
         return $result;

@@ -23,7 +23,8 @@ include_once "Controller/RoleController.php";
 $userController = new UserController();
 $roleController = new RoleController();
 
-echo"
+?>
+
 <div class='userCreationContainer'>
     <div class='container-fluid'>
         <form method='post' action='Controller/EventHandling.php' class='was-validated'>
@@ -36,12 +37,16 @@ echo"
             
             <div class='row' >
                 <div class='col-sm-2'>
-                    <input type='text' name='username' value='".$_SESSION["username"]."' class='form-control' disabled>
-                </div>";
+                    <?php
 
-                //ToDo: Load Password in box, Align Show Password Icon
+                        echo "<input type='text' name='username' value='".$_SESSION["username"]."' 
+                              class='form-control' disabled>";
 
-                echo"
+                    ?>
+                </div>
+
+                <!--ToDo: Load Password in box, Align Show Password Icon-->
+
                 <div class='col-sm-2'>
                     <div class='input-group'>
                         <input type='password' name='changePassword' id='passwordInput' class='form-control' 
@@ -54,28 +59,26 @@ echo"
                     <div class='invalid-feedback'>Please fill out this field to change your password.</div>
                 </div>
             
-                <div class='col-sm-2'>";
-
-                //ToDo: Email Output
-
-                echo"
+                <div class='col-sm-2'>
+                    <!--ToDo: Email Output-->
                     <div class='input-group mb-3'>
                         <select lass='custom-select' class='custom-select' disabled>
                             <option>coming soon</option>
                         </select>
                     </div>
                 </div>
-                
-                <div class='col-sm-2'>";
 
-                $userRoleId = $userController->getRoleOfUser();
-
-                $userRole = $roleController->getRoleName($userRoleId);
-
-                echo"
+                <div class='col-sm-2'>
                     <div class='input-group mb-3'>
                         <select lass='custom-select' class='custom-select' disabled>
-                            <option>".$userRole."</option>
+                            <?php
+
+                                $userRoleId = $userController->getRoleOfUser();
+                                $userRole = $roleController->getRoleName($userRoleId);
+
+                                echo"<option>".$userRole."</option>";
+
+                            ?>
                         </select>
                     </div>
                 </div>
@@ -83,9 +86,9 @@ echo"
                 <div class='col-sm-2'>
                     <button type='submit' class='btn btn-light'>Save Change</button>
                 </div>
-                
+
                 <div class='col-sm-2'>
-            
+
                 </div>
             </div>
         </form>
@@ -93,13 +96,13 @@ echo"
 </div>
 
 <hr class='menuDivider'>
-";
+
+<?php
 
 if($userController->isAdmin()){
 
-    $users = $userController->getAllUsers();
-
-    echo "
+        $users = $userController->getAllUsers();
+?>
 
 <div class='userCreationContainer'>
     <div class='container-fluid'>
@@ -107,37 +110,54 @@ if($userController->isAdmin()){
             <div class='col-sm-12'>
                 <p class='menuTitle'>Edit Users</p>
             </div>
-        </div>";
+        </div>
 
-    foreach ($users as $user){
-        echo "
-        
-            <form method='post' action='Controller/EventHandling.php' class='was-validated'>
+        <?php
 
-                <div class='row' >
-            
-                    <span class='col-sm-2'>
-                        <input type='text' name='username' value='".$user["username"]."' class='form-control' disabled>
-                    </span>
-            
-                    <span class='col-sm-2'>
-                         <input type='text' name='changePassword' id='changePassword' value='".$user["password"]."'
-                         class='form-control' required>
+            foreach ($users as $user){
 
-                         <div class='invalid-feedback'>Please fill out this field to change the password.</div>
-                    </span>
-            
-                    <input type='hidden' name='editProfile' id='editProfile'>
-            
-                    <input type='hidden' name='userId' id='userId' value='".$user["id"]."'>
-            
-                    <span class='col-sm-2'>
-                       <input type='text' value='".$user["mail"]."'  class='form-control' disabled>
-                    </span>
-            
-                    <span class='col-sm-2'>
-                        <div class='input-group mb-3'>
-                            <select name='role' class='custom-select'>";
+        ?>
+
+        <form method='post' action='Controller/EventHandling.php' class='was-validated'>
+
+            <div class='row' >
+                <div class='col-sm-2'>
+                    <?php
+
+                        echo "<input type='text' name='username' value='".$user["username"]."'
+                              class='form-control' disabled>";
+
+                    ?>
+                </div>
+
+                <div class='col-sm-2'>
+                    <?php
+
+                    echo "<input type='text' name='changePassword' id='changePassword' value='".$user["password"]."'
+                    class='form-control' required>";
+
+                    ?>
+                    <div class='invalid-feedback'>Please fill out this field to change the password.</div>
+                </div>
+
+                <input type='hidden' name='editProfile' id='editProfile'>
+                <?php
+
+                    echo "<input type='hidden' name='userId' id='userId' value='".$user["id"]."'>";
+
+                ?>
+                <div class='col-sm-2'>
+                    <?php
+
+                        echo "<input type='text' value='".$user["mail"]."'  class='form-control' disabled>";
+
+                    ?>
+                </div>
+
+                <div class='col-sm-2'>
+                    <div class='input-group mb-3'>
+                        <select name='role' class='custom-select'>
+                            <?php
 
                                 $roles = $roleController->getAllRoles();
 
@@ -150,27 +170,32 @@ if($userController->isAdmin()){
                                     }
                                 }
 
+                            ?>
+                        </select>
+                    </div>
 
-                                echo "
-                            </select>
-                        </div>
-                            
-                        <div class='invalid-feedback'>Please select a role.</div>
-                    </span>
-            
-                    <span class='col-sm-2'>
-                        <button type='submit' class='btn btn-light'>Save Change</button>
-                    </span>
-                        
-                    <span class='col-sm-2'>
-                        
-                    </span>
+                    <div class='invalid-feedback'>Please select a role.</div>
                 </div>
-            </form>";
-    }
-    echo "
-        </div>
-    </div>";
+
+                <div class='col-sm-2'>
+                    <button type='submit' class='btn btn-light'>Save Change</button>
+                </div>
+
+                <div class='col-sm-2'>
+
+                </div>
+            </div>
+        </form>
+<?php
+
+        }
+
+?>
+    </div>
+</div>
+
+<?php
+
 }
 
 ?>

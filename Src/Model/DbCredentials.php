@@ -26,8 +26,6 @@ class DbCredentials
     private const DB_PASSWORD='67JeQUlqI6PRLTTd';
     private const DB_NAME='miniwiki';
 
-
-
     //getter used in the DbController to get required information to connect with DB
     public function getCredentials(): array
     {
@@ -38,6 +36,5 @@ class DbCredentials
             "DB_NAME" => $this::DB_NAME,
         );
     }
-
 
 }

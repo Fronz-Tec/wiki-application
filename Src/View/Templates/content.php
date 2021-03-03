@@ -21,6 +21,9 @@
 include_once "Controller/UserController.php";
 $userController = new UserController();
 
+include_once "Controller/SessionController.php";
+$sessionController = new SessionController();
+
 if(isset($_GET["site"])){
     if($_GET["site"] != "login"){
 
@@ -54,16 +57,23 @@ if(isset($_GET["site"])){
 
     if(isset($_SESSION["sessionID"]) != null && isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == true){
 
-        if($_GET["site"] == "articleView"){
-            include_once("View/Article/articleView.php");
-        }else if($_GET["site"] == "articleCreation"){
-            include_once("View/Article/articleCreationView.php");
-        }else if($_GET["site"] == "userCreation"){
-            include_once ("View/User/userCreation.php");
-        }else if($_GET["site"] == "userProfile"){
-            include_once ("View/User/userProfile.php");
+
+        if ($sessionController->verifySession()) {
+
+            if ($_GET["site"] == "articleView") {
+                include_once("View/Article/articleView.php");
+            } else if ($_GET["site"] == "articleCreation") {
+                include_once("View/Article/articleCreationView.php");
+            } else if ($_GET["site"] == "userCreation") {
+                include_once("View/User/userCreation.php");
+            } else if ($_GET["site"] == "userProfile") {
+                include_once("View/User/userProfile.php");
+            } else {
+                header('location: http://localhost/wiki/?site=articleView');
+            }
         }else{
-            header('location: http://localhost/wiki/?site=articleView');
+            session_destroy();
+            header('location: http://localhost/wiki/?site=login');
         }
 
     }else {

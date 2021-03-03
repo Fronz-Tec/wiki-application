@@ -23,7 +23,7 @@ include_once "Model/DbCredentials.php";
 class VisibilityController
 {
 
-    public function getAlVisibilities(): array
+    public function getAllVisibilities(): array
     {
         $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
@@ -37,9 +37,10 @@ class VisibilityController
         $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
-        $statement = "SELECT * FROM `visibility` WHERE `name`='draft' OR `name`='open'";
+        $result = $dbController->getAllByOr("visibility","name","draft",
+            "name","open");
 
-        return $dbController->executeQuery($statement);
+        return $result;
     }
 
 }

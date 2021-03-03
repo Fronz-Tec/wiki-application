@@ -44,7 +44,7 @@ class DbController
             $this->getDbConnection();
         }
 
-        $this->createDbTables();
+//        $this->createDbTables();
     }
 
 
@@ -282,6 +282,8 @@ class DbController
 
     public function executeQuery($statement)
     {
+
+        error_log("Execute Query: ".$statement);
         return mysqli_query($this->getDbConnection(), $statement);
     }
 
@@ -339,8 +341,8 @@ class DbController
 
     public function getAllByOr($table,$condition1,$conditionCheck1,$condition2,$conditionCheck2):array
     {
-        $statement = "SELECT * FROM `".$table."` WHERE `".$condition1."`=".$conditionCheck1." 
-        OR `".$condition2."`=".$conditionCheck2;
+        $statement = "SELECT * FROM `".$table."` WHERE `".$condition1."`='".$conditionCheck1."' 
+        OR `".$condition2."`='".$conditionCheck2."'";
 
         $result = array();
 

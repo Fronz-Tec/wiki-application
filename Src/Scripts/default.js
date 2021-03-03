@@ -1,8 +1,8 @@
 function showPassword() {
-    let x = document.getElementById("passwordInput");
-    if (x.type === "password") {
-        x.type = "text";
+    let passwordField = document.getElementById("passwordInput");
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
     } else {
-        x.type = "password";
+        passwordField.type = "password";
     }
 }

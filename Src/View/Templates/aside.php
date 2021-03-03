@@ -49,7 +49,7 @@
             <?php
 
             if ($userController->isAdmin() || $userController->isCurator()) {
-                $visibilities = $visibilityController->getAlVisibilities();
+                $visibilities = $visibilityController->getAllVisibilities();
             }else {
                 $visibilities = $visibilityController->getUserVisibility();
             }
@@ -89,7 +89,7 @@
         </form>
     </div>
 
-    <hr class='menuDivider'>";
+    <hr class='menuDivider'>
 
     <?php
 

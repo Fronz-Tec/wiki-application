@@ -207,7 +207,7 @@ class ArticleController
         $hasPermission = false;
 
         //checks if the session wasn't manipulated
-        if ($sessionController->verifySession()) {
+//        if ($sessionController->verifySession()) {
 
             $userController = new UserController();
 
@@ -234,9 +234,9 @@ class ArticleController
                 }
 
             }
-        } else {
-            $hasPermission = false;
-        }
+//        } else {
+//            $hasPermission = false;
+//        }
 
         return $hasPermission;
     }

@@ -83,8 +83,8 @@ $linkController = new LinkController();
                         <?php
 
                         echo "
-                            <textarea id='articleText' name='articleText' class='articleText'required>
-                            ".$loadedArticle[0][3]."</textarea>";
+                            <textarea id='articleText' name='articleText' class='articleText' required>"
+                            .$loadedArticle[0][3]."</textarea>";
 
                         ?>
                        <div class='valid-feedback'>Valid.</div>
@@ -101,7 +101,7 @@ $linkController = new LinkController();
                             
                     </span>
                             
-                    <span class='col-sm-10'>";
+                    <span class='col-sm-10'>
                         <?php
 
                         $links = $linkController->getAllLinksFromArticle($_GET["articleId"]);

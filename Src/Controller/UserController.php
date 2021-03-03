@@ -144,7 +144,7 @@ class UserController
 
         $isAdmin = false;
 
-        if ($sessionController->verifySession()) {
+//        if ($sessionController->verifySession()) {
 
             if ($this->getRoleOfUser() == "1") {
 
@@ -154,7 +154,7 @@ class UserController
 
                 $isAdmin = false;
             }
-        }
+//        }
 
         return $isAdmin;
     }
@@ -166,11 +166,11 @@ class UserController
 
         $isCurator = false;
 
-        if ($sessionController->verifySession()) {
+//        if ($sessionController->verifySession()) {
             if ($this->getRoleOfUser() == "2") {
                 $isCurator = true;
             }
-        }
+//        }
 
         return $isCurator;
     }
@@ -185,7 +185,7 @@ class UserController
 
         $userRole = null;
 
-        if ($sessionController->verifySession()) {
+//        if ($sessionController->verifySession()) {
 
             $username = $_SESSION["username"];
 
@@ -194,7 +194,7 @@ class UserController
             $userRole = $user[0][5];
 
 
-        }
+//        }
 
         return $userRole;
 
@@ -209,14 +209,14 @@ class UserController
 
         $userGroup = null;
 
-        if ($sessionController->verifySession()) {
+//        if ($sessionController->verifySession()) {
 
             $username = $_SESSION["username"];
 
             $user = $dbController->getAllBy("user", "username", $username);
 
             $userGroup = $user[0][4];
-        }
+//        }
 
         return $userGroup;
     }
@@ -230,14 +230,14 @@ class UserController
 
         $userId = null;
 
-        if ($sessionController->verifySession()) {
+//        if ($sessionController->verifySession()) {
 
             $username = $_SESSION["username"];
 
             $user = $dbController->getAllBy("user", "username", $username);
 
             $userId = $user[0][0];
-        }
+//        }
 
         return $userId;
     }

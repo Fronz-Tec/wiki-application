@@ -55,6 +55,7 @@ class LoginController
                 header('location: http://localhost/wiki/?site=articleView');
             } else {
                 error_log("Password wrong");
+                header('location: http://localhost/wiki/?site=login%20message=failed');
             }
 
         } else {

@@ -21,12 +21,14 @@ use DbCredentials\DbCredentials;
 
  $connection = null;
 
+include_once "LogController.php";
+
 class DbController
 {
 
     public $dbCredentials;
     public $isConnected;
-
+    public $logController;
 
     /**
      * DbController constructor.
@@ -43,6 +45,8 @@ class DbController
         if ($connection == null){
             $this->getDbConnection();
         }
+
+        $this->logController = new LogController();
 
 //        $this->createDbTables();
     }
@@ -282,6 +286,7 @@ class DbController
 
     public function executeQuery($statement)
     {
+        $this->logController->createLog($statement);
 
         error_log("Execute Query: ".$statement);
         return mysqli_query($this->getDbConnection(), $statement);

@@ -175,8 +175,8 @@ class ArticleController
         //ToDo: Prevent SQL Injection
 
         $statement = "INSERT INTO `article` (`title`, `text`, `author_fsid`, `visibility_fsid`, `category_fsid`) 
-        VALUES ('" . htmlspecialchars($title, ENT_QUOTES) . "', '" . htmlspecialchars($text, ENT_QUOTES) . "', 
-        '" . $authorId . "', '" . $visibility . "', '" . $category . "'); ";
+        VALUES ('" . htmlspecialchars($title, ENT_QUOTES) . "', '" . htmlspecialchars($text, ENT_QUOTES) . "','".
+            $authorId . "', '" . $visibility . "', '" . $category . "'); ";
 
         error_log($statement);
 
@@ -189,10 +189,9 @@ class ArticleController
         $dbCredentials = new DbCredentials();
         $dbController = new DbController($dbCredentials);
 
-        $statement = "UPDATE `article` SET `title`='" . htmlspecialchars($title, ENT_QUOTES) . "',
-        `text`='" . htmlspecialchars($text, ENT_QUOTES) . "', 
-        `visibility_fsid`='" . $visibility . "', 
-        `category_fsid`='" . $category . "' WHERE `id`='" . $id . "'";
+        $statement = "UPDATE `article` SET `title`='" . htmlspecialchars($title, ENT_QUOTES).
+            "',`text`='" . htmlspecialchars($text, ENT_QUOTES) . "',`visibility_fsid`='".
+            $visibility . "', `category_fsid`='" . $category . "' WHERE `id`='" . $id . "'";
 
         return $dbController->executeQuery($statement);
     }

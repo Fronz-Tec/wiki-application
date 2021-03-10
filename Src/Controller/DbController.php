@@ -286,10 +286,13 @@ class DbController
 
     public function executeQuery($statement)
     {
-        $this->logController->createLog($statement);
+        $query = mysqli_query($this->getDbConnection(), $statement);
 
-        error_log("Execute Query: ".$statement);
-        return mysqli_query($this->getDbConnection(), $statement);
+        $lastId = $this->getDbConnection()->insert_id;
+
+        $this->logController->createLog($statement, $lastId);
+
+        return $query;
     }
 
 

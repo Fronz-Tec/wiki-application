@@ -81,13 +81,13 @@ class UserController
         $userRole = $role;
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        $statement = "UPDATE `user` SET `password`='" . $hashedPassword . "', `role_fsid`=" . $userRole . " 
-        WHERE `id`=" . $userId;
+        $statement = "UPDATE `user` SET `password`='" . $hashedPassword . "', `role_fsid`="
+            . $userRole . " WHERE `id`=" . $userId;
 
         if ($role == 4) {
 
-            $statement = "UPDATE `user` SET `password`='" . $hashedPassword . "', `role_fsid`=" . $userRole . ", 
-            `current_session`=NULL WHERE `id`=" . $userId;
+            $statement = "UPDATE `user` SET `password`='" . $hashedPassword . "', `role_fsid`="
+                . $userRole . ", `current_session`=NULL WHERE `id`=" . $userId;
         }
 
         return $dbController->executeQuery($statement);
